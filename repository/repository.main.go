@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"payment-gateway/repository/entity"
 
+	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
@@ -15,6 +17,23 @@ type (
 	}
 
 	Repository interface {
+		GetUsers(ctx *gin.Context) ([]entity.User, error)
+		CreateUser(ctx *gin.Context, data entity.User) error
+		GetUserByEmail(ctx *gin.Context, email string) (entity.User, error)
+		GetUserById(ctx *gin.Context, id int) (entity.User, error)
+		CreatePaymentMethod(ctx *gin.Context, data entity.PaymentMethod) error
+		GetPaymentMethods(ctx *gin.Context) ([]entity.PaymentMethod, error)
+		CreatePayment(ctx *gin.Context, data entity.Payment) error
+		GetPaymentMethodById(ctx *gin.Context, id int) (entity.PaymentMethod, error)
+		PutPaymentMethod(ctx *gin.Context, id int, updatedData entity.PaymentMethod) error
+		CreateCategory(ctx *gin.Context, data entity.Category) error
+		GetCategory(ctx *gin.Context) ([]entity.Category, error)
+		GetCategoryById(ctx *gin.Context, id int) (entity.Category, error)
+		PutCategory(ctx *gin.Context, id int, updatedData entity.Category) error
+		CreateEtalase(ctx *gin.Context, data entity.Etalase) error
+		GetEtalase(ctx *gin.Context) ([]entity.Etalase, error)
+		GetEtalaseById(ctx *gin.Context, id int) (entity.Etalase, error)
+		PutEtalase(ctx *gin.Context, id int, updatedData entity.Etalase) error
 	}
 )
 
