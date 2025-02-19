@@ -32,6 +32,10 @@ type (
 		GetAllEtalase(ctx *gin.Context) models.Response
 		GetEtalaseById(ctx *gin.Context, id int) models.Response
 		PutEtalase(ctx *gin.Context, id int, payload models.RequestEtalase) models.Response
+		CreateExpedition(ctx *gin.Context, payload models.RequestExpedition) models.Response
+		GetAllExpedition(ctx *gin.Context) models.Response
+		GetExpeditionById(ctx *gin.Context, id int) models.Response
+		PutExpedition(ctx *gin.Context, id int, payload models.RequestExpedition) models.Response
 	}
 )
 

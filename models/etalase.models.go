@@ -1,5 +1,5 @@
 package models
 
 type RequestEtalase struct {
-	Name string `json:"name"`
+	Name string `json:"name" validate:"required"`
 }
