@@ -43,6 +43,7 @@ func (c *controllers) GetAllExpedition(ctx *gin.Context) {
 	var res models.Response
 
 	res = c.Usecase.GetAllExpedition(ctx)
+	log.Println("Response Get All Expendition")
 
 	ctx.JSON(res.Code, res)
 }

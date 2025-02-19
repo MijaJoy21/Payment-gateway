@@ -37,6 +37,7 @@ func (uc *usecase) GetAllExpedition(ctx *gin.Context) models.Response {
 	data, err := uc.Repository.GetExpedition(ctx)
 
 	if err != nil {
+		log.Println("Error Get all expedition", err)
 		res.Code = http.StatusInternalServerError
 		res.Message = "Server Error"
 
@@ -56,6 +57,7 @@ func (uc *usecase) GetExpeditionById(ctx *gin.Context, id int) models.Response {
 	data, err := uc.Repository.GetExpeditionById(ctx, id)
 
 	if err != nil {
+		log.Println("Error Get Expedition By ID ", err)
 		res.Code = http.StatusNotFound
 		res.Message = "Data not found"
 

@@ -83,7 +83,7 @@ func (c *controllers) PutCategory(ctx *gin.Context) {
 
 	err = helpers.Validator(payload)
 	if err != nil {
-		log.Println("Error", err)
+		log.Println("Error Update Field Empty", err)
 		res.Code = http.StatusBadRequest
 		res.Message = "Please Filled The required field"
 		ctx.JSON(res.Code, res)
