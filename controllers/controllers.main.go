@@ -31,6 +31,10 @@ type (
 		GetAllEtalase(ctx *gin.Context)
 		GetEtalaseById(ctx *gin.Context)
 		PutEtalase(ctx *gin.Context)
+		CreateExpedition(ctx *gin.Context)
+		GetAllExpedition(ctx *gin.Context)
+		GetExpeditionById(ctx *gin.Context)
+		PutExpediton(ctx *gin.Context)
 	}
 )
 

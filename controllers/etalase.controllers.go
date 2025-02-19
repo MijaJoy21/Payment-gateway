@@ -3,6 +3,7 @@ package controllers
 import (
 	"log"
 	"net/http"
+	"payment-gateway/helpers"
 	"payment-gateway/models"
 	"strconv"
 
@@ -19,6 +20,15 @@ func (c *controllers) CreateEtalase(ctx *gin.Context) {
 		res.Code = http.StatusBadRequest
 		res.Message = "Bad Request"
 
+		ctx.JSON(res.Code, res)
+		return
+	}
+
+	err := helpers.Validator(payload)
+	if err != nil {
+		log.Println("Error", err)
+		res.Code = http.StatusBadRequest
+		res.Message = "Please Filled The required field"
 		ctx.JSON(res.Code, res)
 		return
 	}
@@ -67,6 +77,14 @@ func (c *controllers) PutEtalase(ctx *gin.Context) {
 		log.Println("Error Binding JSON", err)
 		res.Code = http.StatusBadRequest
 		res.Message = "Invalid request body"
+		ctx.JSON(res.Code, res)
+		return
+	}
+
+	if err != nil {
+		log.Println("Error", err)
+		res.Code = http.StatusBadRequest
+		res.Message = "Please Filled The required field"
 		ctx.JSON(res.Code, res)
 		return
 	}

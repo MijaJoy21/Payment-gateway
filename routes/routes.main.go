@@ -71,6 +71,14 @@ func (r *Router) StartGinServer() error {
 		etalase.PUT("/update/:id", middleware.Authorization("Admin"), r.controllers.PutEtalase)
 	}
 
+	expedition := api.Group("/expedition")
+	{
+		expedition.POST("/create", middleware.Authorization("Admin"), r.controllers.CreateExpedition)
+		expedition.GET("/", r.controllers.GetAllExpedition)
+		expedition.GET("/:id", r.controllers.GetExpeditionById)
+		expedition.PUT("/update/:id", middleware.Authorization("Admin"), r.controllers.PutExpediton)
+	}
+
 	if err := helpers.StartGinServer(r.gin); err != nil {
 		fmt.Println("Error Start Server", err)
 	}
