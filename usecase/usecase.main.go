@@ -37,6 +37,9 @@ type (
 		GetExpeditionById(ctx *gin.Context, id int) models.Response
 		PutExpedition(ctx *gin.Context, id int, payload models.RequestExpedition) models.Response
 		CreateProduct(ctx *gin.Context, payload models.CreateProduct) models.Response
+		GetAllProduct(ctx *gin.Context) models.Response
+		GetProductById(ctx *gin.Context, id int) models.Response
+		PutProduct(ctx *gin.Context, id int, payload models.RequestProduct) models.Response
 	}
 )
 
