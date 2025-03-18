@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"payment-gateway/models"
 	"payment-gateway/repository/entity"
 
 	"github.com/gin-gonic/gin"
@@ -13,10 +14,19 @@ func (db *repository) CreateExpedition(ctx *gin.Context, data entity.Expedition)
 	return query.Error
 }
 
-func (db *repository) GetExpedition(ctx *gin.Context) ([]entity.Expedition, error) {
+func (db *repository) GetExpedition(ctx *gin.Context, params models.ParamsGetExpeditions) ([]entity.Expedition, error) {
 	var data []entity.Expedition
-
+	var total int64
 	query := db.DB.Model(&data)
+
+	if params.Search != "" {
+		query = query.Where("name like ?", "%"+params.Search+"%")
+	}
+
+	query.Count(&total)
+
+	offset := (params.Page - 1) * params.Limit
+	query = query.Limit(params.Limit).Offset(offset)
 	query.Find(&data)
 
 	return data, query.Error

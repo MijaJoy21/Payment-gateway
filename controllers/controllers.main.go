@@ -35,6 +35,7 @@ type (
 		GetAllExpedition(ctx *gin.Context)
 		GetExpeditionById(ctx *gin.Context)
 		PutExpediton(ctx *gin.Context)
+		CreateProduct(ctx *gin.Context)
 	}
 )
 

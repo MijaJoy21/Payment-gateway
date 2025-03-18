@@ -31,10 +31,10 @@ func (uc *usecase) CreateExpedition(ctx *gin.Context, payload models.RequestExpe
 	return res
 }
 
-func (uc *usecase) GetAllExpedition(ctx *gin.Context) models.Response {
+func (uc *usecase) GetAllExpedition(ctx *gin.Context, params models.ParamsGetExpeditions) models.Response {
 	res := models.Response{}
 
-	data, err := uc.Repository.GetExpedition(ctx)
+	data, err := uc.Repository.GetExpedition(ctx, params)
 
 	if err != nil {
 		log.Println("Error Get all expedition", err)

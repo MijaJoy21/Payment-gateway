@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"payment-gateway/helpers"
@@ -42,7 +43,17 @@ func (c *controllers) CreateExpedition(ctx *gin.Context) {
 func (c *controllers) GetAllExpedition(ctx *gin.Context) {
 	var res models.Response
 
-	res = c.Usecase.GetAllExpedition(ctx)
+	params := models.ParamsGetExpeditions{}
+	if err := ctx.BindQuery(&params); err != nil {
+		fmt.Println("Error get query params ", err)
+		res.Code = http.StatusInternalServerError
+		res.Message = "Server Error "
+
+		ctx.JSON(http.StatusInternalServerError, res)
+		return
+	}
+
+	res = c.Usecase.GetAllExpedition(ctx, params)
 	log.Println("Response Get All Expendition")
 
 	ctx.JSON(res.Code, res)

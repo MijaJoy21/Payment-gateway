@@ -33,9 +33,10 @@ type (
 		GetEtalaseById(ctx *gin.Context, id int) models.Response
 		PutEtalase(ctx *gin.Context, id int, payload models.RequestEtalase) models.Response
 		CreateExpedition(ctx *gin.Context, payload models.RequestExpedition) models.Response
-		GetAllExpedition(ctx *gin.Context) models.Response
+		GetAllExpedition(ctx *gin.Context, params models.ParamsGetExpeditions) models.Response
 		GetExpeditionById(ctx *gin.Context, id int) models.Response
 		PutExpedition(ctx *gin.Context, id int, payload models.RequestExpedition) models.Response
+		CreateProduct(ctx *gin.Context, payload models.CreateProduct) models.Response
 	}
 )
 

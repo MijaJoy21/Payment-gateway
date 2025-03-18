@@ -79,6 +79,11 @@ func (r *Router) StartGinServer() error {
 		expedition.PUT("/update/:id", middleware.Authorization("Admin"), r.controllers.PutExpediton)
 	}
 
+	product := api.Group("/product")
+	{
+		product.POST("/create", middleware.Authorization("Admin"), r.controllers.CreateProduct)
+	}
+
 	if err := helpers.StartGinServer(r.gin); err != nil {
 		fmt.Println("Error Start Server", err)
 	}
