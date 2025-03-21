@@ -89,6 +89,13 @@ func (r *Router) StartGinServer() error {
 		product.PUT("/update/:id", middleware.Authorization("Admin"), r.controllers.PutProduct)
 	}
 
+	cart := api.Group("/cart")
+	{
+		cart.POST("/create", r.controllers.CreateCart)
+		cart.GET("/:id", r.controllers.GetCartById)
+		cart.PUT("update/:id", r.controllers.PutCart)
+	}
+
 	if err := helpers.StartGinServer(r.gin); err != nil {
 		fmt.Println("Error Start Server", err)
 	}

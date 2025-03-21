@@ -44,6 +44,9 @@ type (
 		GetProduct(ctx *gin.Context, params models.ParamsGetProduct) ([]entity.Product, int64, error)
 		GetProductById(ctx *gin.Context, id int) (entity.Product, error)
 		PutProduct(ctx *gin.Context, id int, updatedData entity.Product) error
+		CreateCart(ctx *gin.Context, data entity.Cart) error
+		GetCartByid(ctx *gin.Context, id int) ([]entity.Cart, error)
+		PutCart(ctx *gin.Context, id int, updatedData entity.Cart) error
 	}
 )
 

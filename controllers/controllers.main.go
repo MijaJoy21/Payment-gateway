@@ -39,6 +39,9 @@ type (
 		GetAllProduct(ctx *gin.Context)
 		GetProductById(ctx *gin.Context)
 		PutProduct(ctx *gin.Context)
+		CreateCart(ctx *gin.Context)
+		GetCartById(ctx *gin.Context)
+		PutCart(ctx *gin.Context)
 	}
 )
 
