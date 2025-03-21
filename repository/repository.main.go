@@ -40,6 +40,7 @@ type (
 		GetExpeditionById(ctx *gin.Context, id int) (entity.Expedition, error)
 		PutExpedition(ctx *gin.Context, id int, updatedData entity.Expedition) error
 		CreateProduct(ctx *gin.Context, data entity.Product) error
+		CreateOrder(ctx *gin.Context, data *entity.Order) error
 	}
 )
 
