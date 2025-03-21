@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"payment-gateway/models"
 	"payment-gateway/repository/entity"
 
 	"github.com/gin-gonic/gin"
@@ -13,13 +14,22 @@ func (db *repository) CreateProduct(ctx *gin.Context, data entity.Product) error
 	return query.Error
 }
 
-func (db *repository) GetProduct(ctx *gin.Context) ([]entity.Product, error) {
+func (db *repository) GetProduct(ctx *gin.Context, params models.ParamsGetProduct) ([]entity.Product, int64, error) {
 	var data []entity.Product
+	var total int64
 
 	query := db.DB.Model(&data)
+
+	if params.Search != "" {
+		query = query.Where("name like ?", "%"+params.Search+"%")
+	}
+	query.Count(&total)
+
+	offset := (params.Page - 1) * params.Limit
+	query = query.Limit(params.Limit).Offset(offset)
 	query.Find(&data)
 
-	return data, query.Error
+	return data, total, query.Error
 
 }
 

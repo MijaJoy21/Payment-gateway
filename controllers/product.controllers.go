@@ -3,6 +3,8 @@ package controllers
 import (
 	"log"
 	"net/http"
+	"path/filepath"
+	"payment-gateway/constant"
 	"payment-gateway/models"
 	"strconv"
 
@@ -14,7 +16,29 @@ func (c *controllers) CreateProduct(ctx *gin.Context) {
 	var res models.Response
 	payload := models.CreateProduct{}
 
-	if err := ctx.BindJSON(&payload); err != nil {
+	file, err := ctx.FormFile("image")
+
+	if err != nil {
+		log.Println("Error get image", err)
+		res.Code = http.StatusBadRequest
+		res.Message = "Bad Request"
+
+		ctx.JSON(res.Code, res)
+		return
+	}
+
+	ext := filepath.Ext(file.Filename)
+
+	if !constant.AllowedExtensions[ext] {
+		log.Println("Image type not supported", err)
+		res.Code = http.StatusBadRequest
+		res.Message = "Image file not supported"
+
+		ctx.JSON(res.Code, res)
+		return
+	}
+
+	if err := ctx.ShouldBind(&payload); err != nil {
 		log.Println("Error Bind JSON", err)
 		res.Code = http.StatusBadRequest
 		res.Message = "Bad Request"
@@ -23,7 +47,7 @@ func (c *controllers) CreateProduct(ctx *gin.Context) {
 		return
 	}
 
-	res = c.Usecase.CreateProduct(ctx, payload)
+	res = c.Usecase.CreateProduct(ctx, file, payload)
 	log.Println("Response Create Product", res)
 
 	ctx.JSON(res.Code, res)
@@ -31,8 +55,18 @@ func (c *controllers) CreateProduct(ctx *gin.Context) {
 
 func (c *controllers) GetAllProduct(ctx *gin.Context) {
 	var res models.Response
+	params := models.ParamsGetProduct{}
 
-	res = c.Usecase.GetAllProduct(ctx)
+	if err := ctx.BindQuery(&params); err != nil {
+		log.Println("Error Bind Params", err)
+		res.Code = http.StatusBadRequest
+		res.Message = "Bad Request"
+
+		ctx.JSON(res.Code, res)
+		return
+	}
+
+	res = c.Usecase.GetAllProduct(ctx, params)
 
 	ctx.JSON(res.Code, res)
 }

@@ -2,6 +2,7 @@ package routes
 
 import (
 	"fmt"
+	"os"
 	"payment-gateway/controllers"
 	"payment-gateway/helpers"
 	"payment-gateway/middleware"
@@ -30,6 +31,7 @@ func InitRoutes(ctrl controllers.Controllers) RouterInterface {
 func (r *Router) StartGinServer() error {
 	fmt.Println("Start Server")
 	//prefix api
+	r.gin.Static("/image", os.Getenv("IMAGE_UPLOAD"))
 	api := r.gin.Group("/api")
 	api.GET("/hc", r.controllers.GetHealthCheck)
 	api.GET("/user", r.controllers.GetAllUsers)

@@ -2,23 +2,61 @@ package usecase
 
 import (
 	"log"
+	"math"
+	"mime/multipart"
 	"net/http"
+	"os"
+	"path/filepath"
 	"payment-gateway/models"
 	"payment-gateway/repository/entity"
+	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
-func (uc *usecase) CreateProduct(ctx *gin.Context, payload models.CreateProduct) models.Response {
+func (uc *usecase) CreateProduct(ctx *gin.Context, file *multipart.FileHeader, payload models.CreateProduct) models.Response {
 	res := models.Response{}
+	filePath := filepath.Join(os.Getenv("IMAGE_UPLOAD"), file.Filename)
+	filePath = filepath.ToSlash(filePath)
+
+	if _, err := os.Stat(os.Getenv("IMAGE_UPLOAD")); os.IsNotExist(err) {
+		os.Mkdir(os.Getenv("IMAGE_UPLOAD"), os.ModePerm)
+	}
+
+	if err := ctx.SaveUploadedFile(file, filePath); err != nil {
+		log.Println("Error upload image ", err)
+		res.Code = http.StatusUnprocessableEntity
+		res.Message = "Failed Upload Image"
+
+		return res
+	}
+
+	tmpTime, err := strconv.Atoi(payload.PreOrderDate)
+
+	if err != nil {
+		log.Println("Error Convert Time ", err)
+		res.Code = http.StatusBadRequest
+		res.Message = "Error time date format"
+
+		return res
+	}
+
+	preOrderTime := time.Unix(int64(tmpTime), 0)
+
 	data := entity.Product{
 		Name:        payload.Name,
 		Categoryid:  payload.CategoryId,
 		Description: payload.Description,
 		Price:       payload.Price,
+		Image:       filePath,
 		Status:      payload.Status,
-		IsPreorder:  payload.IsPreOrder,
 		Weight:      payload.Weight,
+	}
+
+	if payload.IsPreOrder == 1 {
+		data.IsPreorder = payload.IsPreOrder
+		data.PreOrderDate = &preOrderTime
 	}
 
 	if err := uc.Repository.CreateProduct(ctx, data); err != nil {
@@ -35,10 +73,10 @@ func (uc *usecase) CreateProduct(ctx *gin.Context, payload models.CreateProduct)
 	return res
 }
 
-func (uc *usecase) GetAllProduct(ctx *gin.Context) models.Response {
+func (uc *usecase) GetAllProduct(ctx *gin.Context, params models.ParamsGetProduct) models.Response {
 	res := models.Response{}
 
-	data, err := uc.Repository.GetProduct(ctx)
+	data, total, err := uc.Repository.GetProduct(ctx, params)
 
 	if err != nil {
 		res.Code = http.StatusInternalServerError
@@ -50,6 +88,12 @@ func (uc *usecase) GetAllProduct(ctx *gin.Context) models.Response {
 	res.Code = http.StatusOK
 	res.Message = "Success"
 	res.Data = data
+	res.Pagination = &models.Pagination{
+		Page:      params.Page,
+		Limit:     params.Limit,
+		TotalData: total,
+		LastPage:  int(math.Ceil(float64(total) / float64(params.Limit))),
+	}
 
 	return res
 }
