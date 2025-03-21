@@ -41,6 +41,7 @@ func (uc *usecase) GetAllProduct(ctx *gin.Context) models.Response {
 	data, err := uc.Repository.GetProduct(ctx)
 
 	if err != nil {
+		log.Println("Error Get All Product", err)
 		res.Code = http.StatusInternalServerError
 		res.Message = "Server Error"
 
@@ -60,6 +61,7 @@ func (uc *usecase) GetProductById(ctx *gin.Context, id int) models.Response {
 	data, err := uc.Repository.GetProductById(ctx, id)
 
 	if err != nil {
+		log.Println("Error Data Not Found", err)
 		res.Code = http.StatusNotFound
 		res.Message = "Data Not Found"
 

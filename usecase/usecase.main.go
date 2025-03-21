@@ -40,6 +40,9 @@ type (
 		GetAllProduct(ctx *gin.Context) models.Response
 		GetProductById(ctx *gin.Context, id int) models.Response
 		PutProduct(ctx *gin.Context, id int, payload models.RequestProduct) models.Response
+		CreateCart(ctx *gin.Context, payload models.CreateCart) models.Response
+		GetCartById(ctx *gin.Context, id int) models.Response
+		PutCart(ctx *gin.Context, id int, payload models.RequestCart) models.Response
 	}
 )
 
