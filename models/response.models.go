@@ -6,7 +6,7 @@ type Response struct {
 	Code       int         `json:"code"`
 	Message    string      `json:"message"`
 	Data       interface{} `json:"data,omitempty"`
-	Pagination Pagination  `json:"pagination,omitempty"`
+	Pagination *Pagination `json:"pagination,omitempty"`
 }
 
 type ResUser struct {

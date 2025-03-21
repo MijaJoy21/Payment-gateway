@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"mime/multipart"
 	"payment-gateway/models"
 	"payment-gateway/repository"
 
@@ -36,8 +37,8 @@ type (
 		GetAllExpedition(ctx *gin.Context, params models.ParamsGetExpeditions) models.Response
 		GetExpeditionById(ctx *gin.Context, id int) models.Response
 		PutExpedition(ctx *gin.Context, id int, payload models.RequestExpedition) models.Response
-		CreateProduct(ctx *gin.Context, payload models.CreateProduct) models.Response
-		GetAllProduct(ctx *gin.Context) models.Response
+		CreateProduct(ctx *gin.Context, file *multipart.FileHeader, payload models.CreateProduct) models.Response
+		GetAllProduct(ctx *gin.Context, params models.ParamsGetProduct) models.Response
 		GetProductById(ctx *gin.Context, id int) models.Response
 		PutProduct(ctx *gin.Context, id int, payload models.RequestProduct) models.Response
 		CreateCart(ctx *gin.Context, payload models.CreateCart) models.Response

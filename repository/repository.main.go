@@ -40,7 +40,8 @@ type (
 		GetExpeditionById(ctx *gin.Context, id int) (entity.Expedition, error)
 		PutExpedition(ctx *gin.Context, id int, updatedData entity.Expedition) error
 		CreateProduct(ctx *gin.Context, data entity.Product) error
-		GetProduct(ctx *gin.Context) ([]entity.Product, error)
+		CreateOrder(ctx *gin.Context, data *entity.Order) error
+		GetProduct(ctx *gin.Context, params models.ParamsGetProduct) ([]entity.Product, int64, error)
 		GetProductById(ctx *gin.Context, id int) (entity.Product, error)
 		PutProduct(ctx *gin.Context, id int, updatedData entity.Product) error
 		CreateCart(ctx *gin.Context, data entity.Cart) error
