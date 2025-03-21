@@ -36,6 +36,9 @@ type (
 		GetExpeditionById(ctx *gin.Context)
 		PutExpediton(ctx *gin.Context)
 		CreateProduct(ctx *gin.Context)
+		GetAllProduct(ctx *gin.Context)
+		GetProductById(ctx *gin.Context)
+		PutProduct(ctx *gin.Context)
 	}
 )
 
