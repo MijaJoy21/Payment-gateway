@@ -3,9 +3,10 @@ package models
 import "time"
 
 type Response struct {
-	Code    int         `json:"code"`
-	Message string      `json:"message"`
-	Data    interface{} `json:"data,omitempty"`
+	Code       int         `json:"code"`
+	Message    string      `json:"message"`
+	Data       interface{} `json:"data,omitempty"`
+	Pagination *Pagination `json:"pagination,omitempty"`
 }
 
 type ResUser struct {
@@ -14,4 +15,11 @@ type ResUser struct {
 	Email     string     `json:"email"`
 	CreatedAt time.Time  `json:"created_at"`
 	UpdatedAt *time.Time `json:"updated_at"`
+}
+
+type Pagination struct {
+	Page      int   `json:"page"`
+	Limit     int   `json:"limit"`
+	TotalData int64 `json:"total_data"`
+	LastPage  int   `json:"last_page"`
 }

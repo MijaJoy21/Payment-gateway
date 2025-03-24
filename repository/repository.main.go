@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"payment-gateway/models"
 	"payment-gateway/repository/entity"
 
 	"github.com/gin-gonic/gin"
@@ -35,9 +36,17 @@ type (
 		GetEtalaseById(ctx *gin.Context, id int) (entity.Etalase, error)
 		PutEtalase(ctx *gin.Context, id int, updatedData entity.Etalase) error
 		CreateExpedition(ctx *gin.Context, data entity.Expedition) error
-		GetExpedition(ctx *gin.Context) ([]entity.Expedition, error)
+		GetExpedition(ctx *gin.Context, params models.ParamsGetExpeditions) ([]entity.Expedition, error)
 		GetExpeditionById(ctx *gin.Context, id int) (entity.Expedition, error)
 		PutExpedition(ctx *gin.Context, id int, updatedData entity.Expedition) error
+		CreateProduct(ctx *gin.Context, data entity.Product) error
+		CreateOrder(ctx *gin.Context, data *entity.Order) error
+		GetProduct(ctx *gin.Context, params models.ParamsGetProduct) ([]entity.Product, int64, error)
+		GetProductById(ctx *gin.Context, id int) (entity.Product, error)
+		PutProduct(ctx *gin.Context, id int, updatedData entity.Product) error
+		CreateCart(ctx *gin.Context, data entity.Cart) error
+		GetCartByid(ctx *gin.Context, id int) ([]entity.Cart, error)
+		PutCart(ctx *gin.Context, id int, updatedData entity.Cart) error
 	}
 )
 

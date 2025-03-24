@@ -2,6 +2,7 @@ package routes
 
 import (
 	"fmt"
+	"os"
 	"payment-gateway/controllers"
 	"payment-gateway/helpers"
 	"payment-gateway/middleware"
@@ -30,6 +31,7 @@ func InitRoutes(ctrl controllers.Controllers) RouterInterface {
 func (r *Router) StartGinServer() error {
 	fmt.Println("Start Server")
 	//prefix api
+	r.gin.Static("/image", os.Getenv("IMAGE_UPLOAD"))
 	api := r.gin.Group("/api")
 	api.GET("/hc", r.controllers.GetHealthCheck)
 	api.GET("/user", r.controllers.GetAllUsers)
@@ -77,6 +79,21 @@ func (r *Router) StartGinServer() error {
 		expedition.GET("/", r.controllers.GetAllExpedition)
 		expedition.GET("/:id", r.controllers.GetExpeditionById)
 		expedition.PUT("/update/:id", middleware.Authorization("Admin"), r.controllers.PutExpediton)
+	}
+
+	product := api.Group("/product")
+	{
+		product.POST("/create", middleware.Authorization("Admin"), r.controllers.CreateProduct)
+		product.GET("/", r.controllers.GetAllProduct)
+		product.GET("/:id", r.controllers.GetProductById)
+		product.PUT("/update/:id", middleware.Authorization("Admin"), r.controllers.PutProduct)
+	}
+
+	cart := api.Group("/cart")
+	{
+		cart.POST("/create", r.controllers.CreateCart)
+		cart.GET("/:id", r.controllers.GetCartById)
+		cart.PUT("update/:id", r.controllers.PutCart)
 	}
 
 	if err := helpers.StartGinServer(r.gin); err != nil {
