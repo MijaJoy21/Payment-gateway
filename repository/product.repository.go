@@ -24,6 +24,7 @@ func (db *repository) GetProduct(ctx *gin.Context, params models.ParamsGetProduc
 	if params.Search != "" {
 		query = query.Where("name like ?", "%"+params.Search+"%")
 	}
+	query = query.Joins("Category")
 	query.Count(&total)
 
 	offset := (params.Page - 1) * params.Limit

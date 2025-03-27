@@ -3,9 +3,9 @@ package entity
 import "time"
 
 type Product struct {
-	Id         int `gorm:"column:id" json:"id"`
-	Categoryid int `gorm:"column:category_id" json:"category_id"`
-	// Category     Category   `gorm:"foreignKey:category"  json:"category"`
+	Id           int        `gorm:"column:id" json:"id"`
+	Categoryid   int        `gorm:"column:category_id" json:"category_id"`
+	Category     Category   `gorm:"references:category_id; foreignKey:id"  json:"category"`
 	Name         string     `gorm:"column:name" json:"name"`
 	Description  string     `gorm:"column:description" json:"description"`
 	Image        string     `gorm:"column:image" json:"image"`

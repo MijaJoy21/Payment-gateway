@@ -49,7 +49,7 @@ func (uc *usecase) CreateProduct(ctx *gin.Context, file *multipart.FileHeader, p
 		Categoryid:  payload.CategoryId,
 		Description: payload.Description,
 		Price:       payload.Price,
-		Image:       filePath,
+		Image:       file.Filename,
 		Status:      payload.Status,
 		Weight:      payload.Weight,
 	}
