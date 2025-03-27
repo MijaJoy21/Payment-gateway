@@ -16,7 +16,7 @@ func (db *repository) CreateCart(ctx *gin.Context, data entity.Cart) error {
 func (db *repository) GetCartByid(ctx *gin.Context, id int) ([]entity.Cart, error) {
 	var data []entity.Cart
 
-	query := db.DB.Preload("Product").Where("user_id = ?", id).Find(&data)
+	query := db.DB.Joins("Product").Where("user_id = ?", id).Find(&data)
 
 	// query := db.DB.Model(&data)
 	// query = query.Where("id = ?", id)
