@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"log"
 	"payment-gateway/repository/entity"
 
 	"github.com/gin-gonic/gin"
@@ -32,4 +33,16 @@ func (db *repository) PutCart(ctx *gin.Context, id int, updatedData entity.Cart)
 	query.Where("id = ?", id).Updates((updatedData))
 
 	return query.Error
+}
+
+func (db *repository) DeleteCart(ctx *gin.Context, id int) error {
+	var cart entity.Cart
+
+	if err := db.DB.Where("id = ?", id).First(&cart).Error; err != nil {
+		log.Println("ID Not Found")
+		return err
+	}
+	query := db.DB.Delete(&cart).Error
+
+	return query
 }

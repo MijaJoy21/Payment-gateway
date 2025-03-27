@@ -87,6 +87,7 @@ func (r *Router) StartGinServer() error {
 		product.GET("/", r.controllers.GetAllProduct)
 		product.GET("/:id", r.controllers.GetProductById)
 		product.PUT("/update/:id", middleware.Authorization("Admin"), r.controllers.PutProduct)
+		product.DELETE("delete/:id", middleware.Authorization("Admin"), r.controllers.DeleteProduct)
 	}
 
 	cart := api.Group("/cart")
@@ -94,6 +95,7 @@ func (r *Router) StartGinServer() error {
 		cart.POST("/create", r.controllers.CreateCart)
 		cart.GET("/:id", r.controllers.GetCartById)
 		cart.PUT("update/:id", r.controllers.PutCart)
+		cart.DELETE("delete/:id", r.controllers.DeleteCart)
 	}
 
 	if err := helpers.StartGinServer(r.gin); err != nil {

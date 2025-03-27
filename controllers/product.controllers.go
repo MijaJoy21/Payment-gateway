@@ -110,3 +110,18 @@ func (c *controllers) PutProduct(ctx *gin.Context) {
 
 	ctx.JSON(res.Code, res)
 }
+
+func (c *controllers) DeleteProduct(ctx *gin.Context) {
+	var res models.Response
+
+	id, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil || id <= 0 {
+		log.Println("Invalid ID parameter", err)
+		res.Code = http.StatusBadRequest
+		res.Message = "Invalid ID"
+		return
+	}
+
+	res = c.Usecase.DeleteProduct(ctx, id)
+	ctx.JSON(res.Code, res)
+}

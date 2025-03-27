@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"log"
 	"payment-gateway/models"
 	"payment-gateway/repository/entity"
 
@@ -50,4 +51,16 @@ func (db *repository) PutProduct(ctx *gin.Context, id int, updatedData entity.Pr
 	query.Where("id = ?", id).Updates((updatedData))
 
 	return query.Error
+}
+
+func (db *repository) DeleteProduct(ctx *gin.Context, id int) error {
+	var product entity.Product
+
+	if err := db.DB.Where("id = ?", id).First(&product).Error; err != nil {
+		log.Println("ID Not Found")
+		return err
+	}
+	query := db.DB.Delete(&product).Error
+
+	return query
 }
