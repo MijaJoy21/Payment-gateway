@@ -47,6 +47,8 @@ type (
 		CreateCart(ctx *gin.Context, data entity.Cart) error
 		GetCartByid(ctx *gin.Context, id int) ([]entity.Cart, error)
 		PutCart(ctx *gin.Context, id int, updatedData entity.Cart) error
+		DeleteCart(ctx *gin.Context, id int) error
+		DeleteProduct(ctx *gin.Context, id int) error
 	}
 )
 

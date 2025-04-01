@@ -44,6 +44,8 @@ type (
 		CreateCart(ctx *gin.Context, payload models.CreateCart) models.Response
 		GetCartById(ctx *gin.Context, id int) models.Response
 		PutCart(ctx *gin.Context, id int, payload models.RequestCart) models.Response
+		DeleteCart(ctx *gin.Context, id int) models.Response
+		DeleteProduct(ctx *gin.Context, id int) models.Response
 	}
 )
 

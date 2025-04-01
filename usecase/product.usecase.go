@@ -150,3 +150,18 @@ func (uc *usecase) PutProduct(ctx *gin.Context, id int, payload models.RequestPr
 	res.Message = "Success"
 	return res
 }
+
+func (uc *usecase) DeleteProduct(ctx *gin.Context, id int) models.Response {
+	res := models.Response{}
+
+	if err := uc.Repository.DeleteProduct(ctx, id); err != nil {
+		log.Println("Error Data not Found", err)
+		res.Code = http.StatusNotFound
+		res.Message = "Data Not Found"
+		return res
+	}
+
+	res.Code = http.StatusOK
+	res.Message = "Product Deleted"
+	return res
+}
