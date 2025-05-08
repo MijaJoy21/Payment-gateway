@@ -30,7 +30,6 @@ type ParamsGetProduct struct {
 	Search     string `json:"search" form:"search"`
 	CategoryId int    `json:"category_id" form:"category_id"`
 }
-
 type CreateVariant struct {
 	Name     string `json:"name" validate:"required"`
 	Price    int    `json:"price" validate:"required"`

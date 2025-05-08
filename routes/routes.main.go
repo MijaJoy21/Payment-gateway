@@ -43,6 +43,7 @@ func (r *Router) StartGinServer() error {
 	}))
 	// Prefix Api
 	r.gin.Static("/uploads", os.Getenv("IMAGE_UPLOAD"))
+	//prefix api
 	api := r.gin.Group("/api")
 	api.GET("/hc", r.controllers.GetHealthCheck)
 	auth := api.Group("/authorization")
