@@ -81,3 +81,19 @@ func (uc *usecase) PutCart(ctx *gin.Context, id int, payload models.RequestCart)
 	res.Message = "Cart updated successfully"
 	return res
 }
+
+func (uc *usecase) DeleteCart(ctx *gin.Context, id int) models.Response {
+	res := models.Response{}
+
+	if err := uc.Repository.DeleteCart(ctx, id); err != nil {
+		log.Println("Error Data Not Found", err)
+		res.Code = http.StatusNotFound
+		res.Message = "Data not Found"
+
+		return res
+	}
+
+	res.Code = http.StatusOK
+	res.Message = "Cart Deleted"
+	return res
+}

@@ -68,3 +68,19 @@ func (c *controllers) PutCart(ctx *gin.Context) {
 
 	ctx.JSON(res.Code, res)
 }
+
+func (c *controllers) DeleteCart(ctx *gin.Context) {
+	var res models.Response
+
+	id, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil || id <= 0 {
+		log.Println("Invalid ID parameter", err)
+		res.Code = http.StatusBadRequest
+		res.Message = "Invalid ID"
+		return
+	}
+
+	res = c.Usecase.DeleteCart(ctx, id)
+
+	ctx.JSON(res.Code, res)
+}

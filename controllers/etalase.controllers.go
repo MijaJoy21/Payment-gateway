@@ -40,9 +40,7 @@ func (c *controllers) CreateEtalase(ctx *gin.Context) {
 }
 
 func (c *controllers) GetAllEtalase(ctx *gin.Context) {
-	var res models.Response
-
-	res = c.Usecase.GetAllEtalase(ctx)
+	res := c.Usecase.GetAllEtalase(ctx)
 
 	ctx.JSON(res.Code, res)
 }
@@ -77,14 +75,6 @@ func (c *controllers) PutEtalase(ctx *gin.Context) {
 		log.Println("Error Binding JSON", err)
 		res.Code = http.StatusBadRequest
 		res.Message = "Invalid request body"
-		ctx.JSON(res.Code, res)
-		return
-	}
-
-	if err != nil {
-		log.Println("Error", err)
-		res.Code = http.StatusBadRequest
-		res.Message = "Please Filled The required field"
 		ctx.JSON(res.Code, res)
 		return
 	}

@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"path/filepath"
 	"payment-gateway/constant"
+	"payment-gateway/helpers"
 	"payment-gateway/models"
 	"strconv"
 
@@ -16,7 +17,7 @@ func (c *controllers) CreateProduct(ctx *gin.Context) {
 	var res models.Response
 	payload := models.CreateProduct{}
 
-	file, err := ctx.FormFile("image")
+	form, err := ctx.MultipartForm()
 
 	if err != nil {
 		log.Println("Error get image", err)
@@ -27,15 +28,26 @@ func (c *controllers) CreateProduct(ctx *gin.Context) {
 		return
 	}
 
-	ext := filepath.Ext(file.Filename)
-
-	if !constant.AllowedExtensions[ext] {
-		log.Println("Image type not supported", err)
+	files := form.File["image"]
+	if len(files) == 0 {
+		log.Println("Image required")
 		res.Code = http.StatusBadRequest
-		res.Message = "Image file not supported"
+		res.Message = "Image Required"
 
 		ctx.JSON(res.Code, res)
 		return
+	}
+
+	for _, val := range files {
+		ext := filepath.Ext(val.Filename)
+		if !constant.AllowedExtensions[ext] {
+			log.Println("Image type not supported", err)
+			res.Code = http.StatusBadRequest
+			res.Message = "Image file not supported"
+
+			ctx.JSON(res.Code, res)
+			return
+		}
 	}
 
 	if err := ctx.ShouldBind(&payload); err != nil {
@@ -47,7 +59,15 @@ func (c *controllers) CreateProduct(ctx *gin.Context) {
 		return
 	}
 
-	res = c.Usecase.CreateProduct(ctx, file, payload)
+	if err := helpers.Validator(payload); err != nil {
+		log.Println("Error Validation", err)
+		res.Code = http.StatusBadRequest
+		res.Message = "Please Filled required filled"
+		ctx.JSON(res.Code, res)
+		return
+	}
+
+	res = c.Usecase.CreateProduct(ctx, files, payload)
 	log.Println("Response Create Product", res)
 
 	ctx.JSON(res.Code, res)
@@ -108,5 +128,20 @@ func (c *controllers) PutProduct(ctx *gin.Context) {
 	res = c.Usecase.PutProduct(ctx, id, payload)
 	log.Println("Response Update Product", res)
 
+	ctx.JSON(res.Code, res)
+}
+
+func (c *controllers) DeleteProduct(ctx *gin.Context) {
+	var res models.Response
+
+	id, err := strconv.Atoi(ctx.Param("id"))
+	if err != nil || id <= 0 {
+		log.Println("Invalid ID parameter", err)
+		res.Code = http.StatusBadRequest
+		res.Message = "Invalid ID"
+		return
+	}
+
+	res = c.Usecase.DeleteProduct(ctx, id)
 	ctx.JSON(res.Code, res)
 }

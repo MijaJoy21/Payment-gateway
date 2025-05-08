@@ -42,6 +42,8 @@ type (
 		CreateCart(ctx *gin.Context)
 		GetCartById(ctx *gin.Context)
 		PutCart(ctx *gin.Context)
+		DeleteCart(ctx *gin.Context)
+		DeleteProduct(ctx *gin.Context)
 	}
 )
 

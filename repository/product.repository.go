@@ -1,15 +1,17 @@
 package repository
 
 import (
+	"log"
 	"payment-gateway/models"
 	"payment-gateway/repository/entity"
 
 	"github.com/gin-gonic/gin"
 )
 
-func (db *repository) CreateProduct(ctx *gin.Context, data entity.Product) error {
+func (db *repository) CreateProduct(ctx *gin.Context, data *entity.Product) error {
 	query := db.DB.Model(&data)
-	query.Save(&data)
+	query = query.Save(&data)
+	query.Find(&data)
 
 	return query.Error
 }
@@ -23,6 +25,7 @@ func (db *repository) GetProduct(ctx *gin.Context, params models.ParamsGetProduc
 	if params.Search != "" {
 		query = query.Where("name like ?", "%"+params.Search+"%")
 	}
+	query = query.Joins("Category")
 	query.Count(&total)
 
 	offset := (params.Page - 1) * params.Limit
@@ -50,4 +53,16 @@ func (db *repository) PutProduct(ctx *gin.Context, id int, updatedData entity.Pr
 	query.Where("id = ?", id).Updates((updatedData))
 
 	return query.Error
+}
+
+func (db *repository) DeleteProduct(ctx *gin.Context, id int) error {
+	var product entity.Product
+
+	if err := db.DB.Where("id = ?", id).First(&product).Error; err != nil {
+		log.Println("ID Not Found")
+		return err
+	}
+	query := db.DB.Delete(&product).Error
+
+	return query
 }

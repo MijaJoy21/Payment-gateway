@@ -40,9 +40,7 @@ func (c *controllers) CreateCategory(ctx *gin.Context) {
 }
 
 func (c *controllers) GetAllCategory(ctx *gin.Context) {
-	var res models.Response
-
-	res = c.Usecase.GetAllCategory(ctx)
+	res := c.Usecase.GetAllCategory(ctx)
 
 	ctx.JSON(res.Code, res)
 }

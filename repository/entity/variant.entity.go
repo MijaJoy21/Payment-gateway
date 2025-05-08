@@ -2,13 +2,18 @@ package entity
 
 import "time"
 
-type Cart struct {
+type Variant struct {
 	Id        int        `gorm:"column:id" json:"id"`
 	ProductId int        `gorm:"column:product_id" json:"product_id"`
-	Product   Product    `gorm:"references:product_id;foreignKey:id" json:"product"`
-	UserId    int        `gorm:"column:user_id" json:"user_id"`
-	User      User       `gorm:"foreignKey:user_id" json:"user"`
+	Name      string     `gorm:"column:name" json:"name"`
+	Price     int        `gorm:"column:price" json:"price"`
+	Weight    int        `gorm:"column:weight" json:"weight"`
 	Quantity  int        `gorm:"column:quantity" json:"quantity"`
+	Status    int        `gorm:"column:status" json:"status"`
 	CreatedAt time.Time  `gorm:"column:created_at" json:"created_at"`
 	UpdatedAt *time.Time `gorm:"column:updated_at" json:"updated_at"`
+}
+
+func (Variant) TableName() string {
+	return "variant"
 }

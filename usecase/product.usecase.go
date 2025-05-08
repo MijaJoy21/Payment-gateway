@@ -10,36 +10,45 @@ import (
 	"payment-gateway/models"
 	"payment-gateway/repository/entity"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
-func (uc *usecase) CreateProduct(ctx *gin.Context, file *multipart.FileHeader, payload models.CreateProduct) models.Response {
+func (uc *usecase) CreateProduct(ctx *gin.Context, file []*multipart.FileHeader, payload models.CreateProduct) models.Response {
 	res := models.Response{}
-	filePath := filepath.Join(os.Getenv("IMAGE_UPLOAD"), file.Filename)
-	filePath = filepath.ToSlash(filePath)
+	fileNames := []string{}
+	for _, val := range file {
+		filePath := filepath.Join(os.Getenv("IMAGE_UPLOAD"), val.Filename)
+		filePath = filepath.ToSlash(filePath)
 
-	if _, err := os.Stat(os.Getenv("IMAGE_UPLOAD")); os.IsNotExist(err) {
-		os.Mkdir(os.Getenv("IMAGE_UPLOAD"), os.ModePerm)
+		if _, err := os.Stat(os.Getenv("IMAGE_UPLOAD")); os.IsNotExist(err) {
+			os.Mkdir(os.Getenv("IMAGE_UPLOAD"), os.ModePerm)
+		}
+
+		if err := ctx.SaveUploadedFile(val, filePath); err != nil {
+			log.Println("Error upload image ", err)
+			res.Code = http.StatusUnprocessableEntity
+			res.Message = "Failed Upload Image"
+
+			return res
+		}
+
+		fileNames = append(fileNames, filePath)
 	}
+	tmpTime := 0
+	if payload.PreOrderDate != "" {
+		var err error
+		tmpTime, err = strconv.Atoi(payload.PreOrderDate)
 
-	if err := ctx.SaveUploadedFile(file, filePath); err != nil {
-		log.Println("Error upload image ", err)
-		res.Code = http.StatusUnprocessableEntity
-		res.Message = "Failed Upload Image"
+		if err != nil {
+			log.Println("Error Convert Time ", err)
+			res.Code = http.StatusBadRequest
+			res.Message = "Error time date format"
 
-		return res
-	}
-
-	tmpTime, err := strconv.Atoi(payload.PreOrderDate)
-
-	if err != nil {
-		log.Println("Error Convert Time ", err)
-		res.Code = http.StatusBadRequest
-		res.Message = "Error time date format"
-
-		return res
+			return res
+		}
 	}
 
 	preOrderTime := time.Unix(int64(tmpTime), 0)
@@ -49,7 +58,7 @@ func (uc *usecase) CreateProduct(ctx *gin.Context, file *multipart.FileHeader, p
 		Categoryid:  payload.CategoryId,
 		Description: payload.Description,
 		Price:       payload.Price,
-		Image:       filePath,
+		Image:       strings.Join(fileNames, ","),
 		Status:      payload.Status,
 		Weight:      payload.Weight,
 	}
@@ -59,12 +68,34 @@ func (uc *usecase) CreateProduct(ctx *gin.Context, file *multipart.FileHeader, p
 		data.PreOrderDate = &preOrderTime
 	}
 
-	if err := uc.Repository.CreateProduct(ctx, data); err != nil {
+	if err := uc.Repository.CreateProduct(ctx, &data); err != nil {
 		log.Println("Error Create Product", err)
 		res.Code = http.StatusUnprocessableEntity
 		res.Message = "Unprocessable Entity"
 
 		return res
+	}
+
+	if len(payload.Variant) != 0 {
+		variantProduct := []entity.Variant{}
+		for _, val := range payload.Variant {
+			variantProduct = append(variantProduct, entity.Variant{
+				ProductId: data.Id,
+				Name:      val.Name,
+				Price:     val.Price,
+				Weight:    val.Weight,
+				Quantity:  val.Quantity,
+				Status:    val.Status,
+			})
+		}
+
+		if err := uc.Repository.CreateVariant(ctx, variantProduct); err != nil {
+			log.Println("Error create product", err)
+			res.Code = http.StatusUnprocessableEntity
+			res.Message = "Unprocessable entity"
+
+			return res
+		}
 	}
 
 	res.Code = http.StatusOK
@@ -148,5 +179,20 @@ func (uc *usecase) PutProduct(ctx *gin.Context, id int, payload models.RequestPr
 
 	res.Code = http.StatusOK
 	res.Message = "Success"
+	return res
+}
+
+func (uc *usecase) DeleteProduct(ctx *gin.Context, id int) models.Response {
+	res := models.Response{}
+
+	if err := uc.Repository.DeleteProduct(ctx, id); err != nil {
+		log.Println("Error Data not Found", err)
+		res.Code = http.StatusNotFound
+		res.Message = "Data Not Found"
+		return res
+	}
+
+	res.Code = http.StatusOK
+	res.Message = "Product Deleted"
 	return res
 }
