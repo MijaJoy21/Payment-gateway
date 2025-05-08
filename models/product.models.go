@@ -1,14 +1,15 @@
 package models
 
 type CreateProduct struct {
-	Name         string  `json:"name" form:"name"`
-	CategoryId   int     `json:"category_id" form:"category_id"`
-	Description  string  `json:"description" form:"description"`
-	Price        float64 `json:"price" form:"price"`
-	Status       int     `json:"status" form:"status"`
-	IsPreOrder   int     `json:"is_preorder" form:"is_preorder"`
-	PreOrderDate string  `json:"preorder_date" form:"preorder_date"`
-	Weight       int     `json:"weight" form:"weight"`
+	Name         string          `json:"name" form:"name" validate:"required"`
+	CategoryId   int             `json:"category_id" form:"category_id" validate:"required"`
+	Description  string          `json:"description" form:"description" validate:"required"`
+	Variant      []CreateVariant `json:"variant" form:"variant"`
+	Price        float64         `json:"price" form:"price" validate:"required"`
+	Status       int             `json:"status" form:"status"`
+	IsPreOrder   int             `json:"is_preorder" form:"is_preorder"`
+	PreOrderDate string          `json:"preorder_date" form:"preorder_date"`
+	Weight       int             `json:"weight" form:"weight" validate:"required"`
 }
 
 type RequestProduct struct {
@@ -28,4 +29,12 @@ type ParamsGetProduct struct {
 	Limit      int    `json:"limit" form:"limit"`
 	Search     string `json:"search" form:"search"`
 	CategoryId int    `json:"category_id" form:"category_id"`
+}
+
+type CreateVariant struct {
+	Name     string `json:"name" validate:"required"`
+	Price    int    `json:"price" validate:"required"`
+	Weight   int    `json:"weight" validate:"required"`
+	Quantity int    `json:"quantity" validate:"required"`
+	Status   int    `json:"status"`
 }

@@ -6,7 +6,9 @@ import (
 	"payment-gateway/controllers"
 	"payment-gateway/helpers"
 	"payment-gateway/middleware"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -30,11 +32,19 @@ func InitRoutes(ctrl controllers.Controllers) RouterInterface {
 
 func (r *Router) StartGinServer() error {
 	fmt.Println("Start Server")
-	//prefix api
-	r.gin.Static("/image", os.Getenv("IMAGE_UPLOAD"))
+	//cors
+	r.gin.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:8080"}, // frontend kamu
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+	// Prefix Api
+	r.gin.Static("/uploads", os.Getenv("IMAGE_UPLOAD"))
 	api := r.gin.Group("/api")
 	api.GET("/hc", r.controllers.GetHealthCheck)
-	api.GET("/user", r.controllers.GetAllUsers)
 	auth := api.Group("/authorization")
 	{
 		auth.POST("/registration", r.controllers.RegistrationUser)
@@ -45,7 +55,6 @@ func (r *Router) StartGinServer() error {
 	{
 		user.GET("/", middleware.Authorization(""), r.controllers.GetUserById)
 		user.POST("/register/admin", r.controllers.RegistrationAdmin)
-
 	}
 
 	payment := api.Group("/payment")

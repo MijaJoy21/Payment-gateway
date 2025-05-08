@@ -8,9 +8,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (db *repository) CreateProduct(ctx *gin.Context, data entity.Product) error {
+func (db *repository) CreateProduct(ctx *gin.Context, data *entity.Product) error {
 	query := db.DB.Model(&data)
-	query.Save(&data)
+	query = query.Save(&data)
+	query.Find(&data)
 
 	return query.Error
 }
