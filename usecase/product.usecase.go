@@ -143,9 +143,24 @@ func (uc *usecase) GetProductById(ctx *gin.Context, id int) models.Response {
 		return res
 	}
 
+	images := []string{}
+	for _, val := range strings.Split(data.Image, ",") {
+		tmp := os.Getenv("ADDRESS_SERVICE") + os.Getenv("PORT") + val
+		images = append(images, tmp)
+	}
+
+	response := models.GetDetailProductResponse{
+		Id:       data.Id,
+		Name:     data.Name,
+		Price:    data.Price,
+		Weight:   data.Weight,
+		Quantity: data.Quantity,
+		Image:    images,
+	}
+
 	res.Code = http.StatusOK
 	res.Message = "Success"
-	res.Data = data
+	res.Data = response
 
 	return res
 }

@@ -37,3 +37,13 @@ type CreateVariant struct {
 	Quantity int    `json:"quantity" validate:"required"`
 	Status   int    `json:"status"`
 }
+
+type GetDetailProductResponse struct {
+	Id       int      `json:"id"`
+	Name     string   `json:"name"`
+	Price    float64  `json:"price"`
+	Weight   int      `json:"weight"`
+	Quantity int      `json:"quantity"`
+	Status   int      `json:"status"`
+	Image    []string `json:"image"`
+}
