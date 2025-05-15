@@ -72,7 +72,7 @@ func (r *Router) StartGinServer() error {
 		category.POST("/create", middleware.Authorization("Admin"), r.controllers.CreateCategory)
 		category.GET("/", r.controllers.GetAllCategory)
 		category.GET("/:id", r.controllers.GetCategoryById)
-		category.PUT("update/:id", middleware.Authorization("Admin"), r.controllers.PutCategory)
+		category.PUT("/update/:id", middleware.Authorization("Admin"), r.controllers.PutCategory)
 	}
 
 	etalase := api.Group("/etalase")
