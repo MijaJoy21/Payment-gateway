@@ -104,8 +104,8 @@ func (r *Router) StartGinServer() error {
 	{
 		cart.POST("/create", r.controllers.CreateCart)
 		cart.GET("/:id", r.controllers.GetCartById)
-		cart.PUT("update/:id", r.controllers.PutCart)
-		cart.DELETE("delete/:id", r.controllers.DeleteCart)
+		cart.PUT("/update/:id", r.controllers.PutCart)
+		cart.DELETE("/delete/:id", r.controllers.DeleteCart)
 	}
 
 	if err := helpers.StartGinServer(r.gin); err != nil {
