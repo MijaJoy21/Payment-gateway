@@ -10,7 +10,8 @@ type Product struct {
 	Description  string     `gorm:"column:description" json:"description"`
 	Image        string     `gorm:"column:image" json:"image"`
 	Price        float64    `gorm:"column:price" json:"price"`
-	Status       int        `gorm:"column:status" json:"status"`
+	Quantity     int        `gorm:"column:quantity" json:"quantity"`
+	Status       *int       `gorm:"column:status" json:"status"`
 	IsPreorder   int        `gorm:"column:is_preorder" json:"is_preorder"`
 	PreOrderDate *time.Time `gorm:"column:pre_orderdate" json:"pre_orderdate"`
 	Weight       int        `gorm:"column:weight" json:"column"`

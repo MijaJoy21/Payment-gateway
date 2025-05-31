@@ -85,7 +85,7 @@ func (uc *usecase) CreateProduct(ctx *gin.Context, file []*multipart.FileHeader,
 				Price:     val.Price,
 				Weight:    val.Weight,
 				Quantity:  val.Quantity,
-				Status:    val.Status,
+				// Status:    val.Status,
 			})
 		}
 
@@ -117,9 +117,26 @@ func (uc *usecase) GetAllProduct(ctx *gin.Context, params models.ParamsGetProduc
 		return res
 	}
 
+	response := []models.GetProductsResponse{}
+
+	for _, val := range data {
+		image := os.Getenv("ADDRESS_SERVICE") + os.Getenv("PORT") + strings.Split(val.Image, ",")[0]
+		response = append(response, models.GetProductsResponse{
+			Id:          val.Id,
+			Name:        val.Name,
+			Description: val.Description,
+			Image:       image,
+			Price:       val.Price,
+			Status:      val.Status,
+			IsPreorder:  val.IsPreorder,
+			Weight:      val.Weight,
+			Quantity:    val.Quantity,
+		})
+	}
+
 	res.Code = http.StatusOK
 	res.Message = "Success"
-	res.Data = data
+	res.Data = response
 	res.Pagination = &models.Pagination{
 		Page:      params.Page,
 		Limit:     params.Limit,
@@ -143,9 +160,28 @@ func (uc *usecase) GetProductById(ctx *gin.Context, id int) models.Response {
 		return res
 	}
 
+	image := []string{}
+
+	for _, val := range strings.Split(data.Image, ",") {
+		image = append(image, os.Getenv("ADDRESS_SERVICE")+os.Getenv("PORT")+val)
+	}
+
+	response := models.GetProductByIdResponse{
+		Id:          data.Id,
+		Name:        data.Name,
+		CategoryId:  data.Categoryid,
+		Description: data.Description,
+		Image:       image,
+		Price:       data.Price,
+		Status:      data.Status,
+		IsPreorder:  data.IsPreorder,
+		Weight:      data.Weight,
+		Quantity:    data.Quantity,
+	}
+
 	res.Code = http.StatusOK
 	res.Message = "Success"
-	res.Data = data
+	res.Data = response
 
 	return res
 }

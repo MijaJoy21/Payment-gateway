@@ -50,6 +50,7 @@ func (uc *usecase) GetCartById(ctx *gin.Context, id int) models.Response {
 
 	for _, val := range data {
 		cart = append(cart, models.ResponseListCart{
+			Id:              val.Id,
 			ProductId:       val.ProductId,
 			ProductName:     val.Product.Name,
 			ProductQuantity: val.Quantity,

@@ -11,6 +11,7 @@ type RequestCart struct {
 }
 
 type ResponseListCart struct {
+	Id              int     `json:"id"`
 	ProductId       int     `json:"product_id"`
 	ProductName     string  `json:"product_name"`
 	ProductQuantity int     `json:"product_quantity"`
