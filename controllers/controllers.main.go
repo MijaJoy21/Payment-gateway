@@ -44,6 +44,10 @@ type (
 		PutCart(ctx *gin.Context)
 		DeleteCart(ctx *gin.Context)
 		DeleteProduct(ctx *gin.Context)
+		CreateReview(ctx *gin.Context)
+		GetReviewById(ctx *gin.Context)
+		PutReview(ctx *gin.Context)
+		DeleteReview(ctx *gin.Context)
 	}
 )
 

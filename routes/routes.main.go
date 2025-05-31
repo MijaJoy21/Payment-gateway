@@ -108,6 +108,13 @@ func (r *Router) StartGinServer() error {
 		cart.PUT("update/:id", r.controllers.PutCart)
 		cart.DELETE("delete/:id", r.controllers.DeleteCart)
 	}
+	review := api.Group("/review")
+	{
+		review.POST("/create", r.controllers.CreateReview)
+		review.GET("/:id", r.controllers.GetReviewById)
+		review.PUT("update/:id", r.controllers.PutReview)
+		review.DELETE("delete/:id", r.controllers.DeleteReview)
+	}
 
 	if err := helpers.StartGinServer(r.gin); err != nil {
 		fmt.Println("Error Start Server", err)

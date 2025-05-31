@@ -50,6 +50,10 @@ type (
 		DeleteCart(ctx *gin.Context, id int) error
 		DeleteProduct(ctx *gin.Context, id int) error
 		CreateVariant(ctx *gin.Context, data []entity.Variant) error
+		CreateReview(ctx *gin.Context, data *entity.Review) error
+		GetReviewById(ctx *gin.Context, id int) (entity.Review, error)
+		PutReview(ctx *gin.Context, id int, updatedData entity.Review) error
+		DeleteReview(ctx *gin.Context, id int) error
 	}
 )
 

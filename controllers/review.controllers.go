@@ -12,10 +12,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (c *controllers) CreateProduct(ctx *gin.Context) {
-	log.Println("<<Controllers Create Product>>")
+func (c *controllers) CreateReview(ctx *gin.Context) {
+	log.Println("<<Controllers Create Review>>")
 	var res models.Response
-	payload := models.CreateProduct{}
+	payload := models.CreateReview{}
 
 	form, err := ctx.MultipartForm()
 
@@ -32,7 +32,7 @@ func (c *controllers) CreateProduct(ctx *gin.Context) {
 	if len(files) == 0 {
 		log.Println("Image required")
 		res.Code = http.StatusBadRequest
-		res.Message = "Image Required"
+		res.Message = "Image required"
 
 		ctx.JSON(res.Code, res)
 		return
@@ -67,44 +67,26 @@ func (c *controllers) CreateProduct(ctx *gin.Context) {
 		return
 	}
 
-	res = c.Usecase.CreateProduct(ctx, files, payload)
-	log.Println("Response Create Product", res)
+	res = c.Usecase.CreateReview(ctx, files, payload)
+	log.Println("Response Create Review", res)
 
 	ctx.JSON(res.Code, res)
 }
 
-func (c *controllers) GetAllProduct(ctx *gin.Context) {
-	var res models.Response
-	params := models.ParamsGetProduct{}
-
-	if err := ctx.BindQuery(&params); err != nil {
-		log.Println("Error Bind Params", err)
-		res.Code = http.StatusBadRequest
-		res.Message = "Bad Request"
-
-		ctx.JSON(res.Code, res)
-		return
-	}
-
-	res = c.Usecase.GetAllProduct(ctx, params)
-
-	ctx.JSON(res.Code, res)
-}
-
-func (c *controllers) GetProductById(ctx *gin.Context) {
-	log.Println("Controllers Get Product By ID")
+func (c *controllers) GetReviewById(ctx *gin.Context) {
+	log.Println("Controllers Get Review By ID")
 	var res models.Response
 
 	id, _ := strconv.Atoi(ctx.Param("id"))
 
-	res = c.Usecase.GetProductById(ctx, id)
-	log.Println("Response Get Detail Product By ID", res)
+	res = c.Usecase.GetReviewById(ctx, id)
+	log.Println("Response Get Detail Review By ID", res)
 
 	ctx.JSON(res.Code, res)
 }
 
-func (c *controllers) PutProduct(ctx *gin.Context) {
-	log.Println("Controllers Update Product")
+func (c *controllers) PutReview(ctx *gin.Context) {
+	log.Println("Controllers Update Review")
 	var res models.Response
 
 	id, err := strconv.Atoi(ctx.Param("id"))
@@ -116,7 +98,7 @@ func (c *controllers) PutProduct(ctx *gin.Context) {
 		return
 	}
 
-	payload := models.RequestProduct{}
+	payload := models.RequestReview{}
 	if err := ctx.BindJSON(&payload); err != nil {
 		log.Println("Error binding JSON", err)
 		res.Code = http.StatusBadRequest
@@ -125,23 +107,23 @@ func (c *controllers) PutProduct(ctx *gin.Context) {
 		return
 	}
 
-	res = c.Usecase.PutProduct(ctx, id, payload)
-	log.Println("Response Update Product", res)
+	res = c.Usecase.PutReview(ctx, id, payload)
+	log.Println("Response Update Review", res)
 
 	ctx.JSON(res.Code, res)
 }
 
-func (c *controllers) DeleteProduct(ctx *gin.Context) {
+func (c *controllers) DeleteReview(ctx *gin.Context) {
 	var res models.Response
 
 	id, err := strconv.Atoi(ctx.Param("id"))
 	if err != nil || id <= 0 {
-		log.Println("Invalid ID parameter", err)
+		log.Println("Invalid ID Parameter", err)
 		res.Code = http.StatusBadRequest
 		res.Message = "Invalid ID"
 		return
 	}
 
-	res = c.Usecase.DeleteProduct(ctx, id)
+	res = c.Usecase.DeleteReview(ctx, id)
 	ctx.JSON(res.Code, res)
 }
