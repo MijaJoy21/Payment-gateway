@@ -3,8 +3,10 @@ package usecase
 import (
 	"log"
 	"net/http"
+	"os"
 	"payment-gateway/models"
 	"payment-gateway/repository/entity"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -44,9 +46,22 @@ func (uc *usecase) GetCartById(ctx *gin.Context, id int) models.Response {
 		return res
 	}
 
+	cart := []models.ResponseListCart{}
+
+	for _, val := range data {
+		cart = append(cart, models.ResponseListCart{
+			Id:              val.Id,
+			ProductId:       val.ProductId,
+			ProductName:     val.Product.Name,
+			ProductQuantity: val.Quantity,
+			ProductImage:    os.Getenv("ADDRESS_SERVICE") + os.Getenv("PORT") + strings.Split(val.Product.Image, ",")[0],
+			ProductPrice:    val.Product.Price,
+		})
+	}
+
 	res.Code = http.StatusOK
 	res.Message = "Success"
-	res.Data = data
+	res.Data = cart
 
 	return res
 }
