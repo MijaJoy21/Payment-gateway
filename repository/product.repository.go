@@ -23,7 +23,7 @@ func (db *repository) GetProduct(ctx *gin.Context, params models.ParamsGetProduc
 	query := db.DB.Model(&data)
 
 	if params.Search != "" {
-		query = query.Where("name like ?", "%"+params.Search+"%")
+		query = query.Where("product.name like ?", "%"+params.Search+"%")
 	}
 	query = query.Joins("Category")
 	query.Count(&total)

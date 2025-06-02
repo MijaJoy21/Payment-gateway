@@ -54,6 +54,10 @@ type (
 		GetAllOrder(ctx *gin.Context, params models.GetAllOrderParams) ([]entity.Order, int64, error)
 		UpdateOrderStatusById(ctx *gin.Context, status int, id int) error
 		GetOrderById(ctx *gin.Context, id int) (entity.Order, error)
+		CreateReview(ctx *gin.Context, data *entity.Review) error
+		GetReviewById(ctx *gin.Context, id int) (entity.Review, error)
+		PutReview(ctx *gin.Context, id int, updatedData entity.Review) error
+		DeleteReview(ctx *gin.Context, id int) error
 	}
 )
 

@@ -44,6 +44,7 @@ func (r *Router) StartGinServer() error {
 	// Prefix Api
 	r.gin.Static("/uploads", os.Getenv("IMAGE_UPLOAD"))
 	//prefix api
+	r.gin.Static("/image", os.Getenv("IMAGE_UPLOAD"))
 	api := r.gin.Group("/api")
 	api.GET("/hc", r.controllers.GetHealthCheck)
 	auth := api.Group("/authorization")
@@ -106,6 +107,13 @@ func (r *Router) StartGinServer() error {
 		cart.GET("/:id", middleware.Authorization(""), r.controllers.GetCartById)
 		cart.PUT("/update/:id", r.controllers.PutCart)
 		cart.DELETE("/delete/:id", r.controllers.DeleteCart)
+	}
+	review := api.Group("/review")
+	{
+		review.POST("/create", r.controllers.CreateReview)
+		review.GET("/:id", r.controllers.GetReviewById)
+		review.PUT("update/:id", r.controllers.PutReview)
+		review.DELETE("delete/:id", r.controllers.DeleteReview)
 	}
 
 	order := api.Group("/order")

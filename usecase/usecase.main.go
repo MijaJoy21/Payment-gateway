@@ -50,6 +50,10 @@ type (
 		GetAllOrder(ctx *gin.Context, params models.GetAllOrderParams) models.Response
 		UpdateOrderStatusById(ctx *gin.Context, id int, payload models.UpdateOrderStatusByIdReq) models.Response
 		GetOrderById(ctx *gin.Context, id int) models.Response
+		CreateReview(ctx *gin.Context, file []*multipart.FileHeader, payload models.CreateReview) models.Response
+		GetReviewById(ctx *gin.Context, id int) models.Response
+		PutReview(ctx *gin.Context, id int, payload models.RequestReview) models.Response
+		DeleteReview(ctx *gin.Context, id int) models.Response
 	}
 )
 
