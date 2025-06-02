@@ -44,6 +44,9 @@ type (
 		PutCart(ctx *gin.Context)
 		DeleteCart(ctx *gin.Context)
 		DeleteProduct(ctx *gin.Context)
+		CreateOrder(ctx *gin.Context)
+		GetAllOrder(ctx *gin.Context)
+		UpdateOrderStatusById(ctx *gin.Context)
 	}
 )
 

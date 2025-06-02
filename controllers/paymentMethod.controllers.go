@@ -30,9 +30,7 @@ func (c *controllers) CreatePaymentMethod(ctx *gin.Context) {
 }
 
 func (c *controllers) GetAllPaymentMethods(ctx *gin.Context) {
-	var res models.Response
-
-	res = c.Usecase.GetAllPaymentMethods(ctx)
+	res := c.Usecase.GetAllPaymentMethods(ctx)
 
 	ctx.JSON(res.Code, res)
 }

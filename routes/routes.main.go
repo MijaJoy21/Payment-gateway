@@ -102,10 +102,17 @@ func (r *Router) StartGinServer() error {
 
 	cart := api.Group("/cart")
 	{
-		cart.POST("/create", r.controllers.CreateCart)
-		cart.GET("/:id", r.controllers.GetCartById)
+		cart.POST("/create", middleware.Authorization(""), r.controllers.CreateCart)
+		cart.GET("/:id", middleware.Authorization(""), r.controllers.GetCartById)
 		cart.PUT("/update/:id", r.controllers.PutCart)
 		cart.DELETE("/delete/:id", r.controllers.DeleteCart)
+	}
+
+	order := api.Group("/order")
+	{
+		order.POST("/create", middleware.Authorization(""), r.controllers.CreateOrder)
+		order.GET("/all/admin", middleware.Authorization("Admin"), r.controllers.GetAllOrder)
+		order.PUT("/update-status/:id", middleware.Authorization("Admin"), r.controllers.UpdateOrderStatusById)
 	}
 
 	if err := helpers.StartGinServer(r.gin); err != nil {

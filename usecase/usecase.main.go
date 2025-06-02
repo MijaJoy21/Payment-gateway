@@ -46,6 +46,9 @@ type (
 		PutCart(ctx *gin.Context, id int, payload models.RequestCart) models.Response
 		DeleteCart(ctx *gin.Context, id int) models.Response
 		DeleteProduct(ctx *gin.Context, id int) models.Response
+		CreateOrder(ctx *gin.Context, payload models.ReqCreateOrder) models.Response
+		GetAllOrder(ctx *gin.Context, params models.GetAllOrderParams) models.Response
+		UpdateOrderStatusById(ctx *gin.Context, id int, payload models.UpdateOrderStatusByIdReq) models.Response
 	}
 )
 

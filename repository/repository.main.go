@@ -50,6 +50,9 @@ type (
 		DeleteCart(ctx *gin.Context, id int) error
 		DeleteProduct(ctx *gin.Context, id int) error
 		CreateVariant(ctx *gin.Context, data []entity.Variant) error
+		CreateOrderDetail(ctx *gin.Context, data []entity.OrderDetail) error
+		GetAllOrder(ctx *gin.Context, params models.GetAllOrderParams) ([]entity.Order, int64, error)
+		UpdateOrderStatusById(ctx *gin.Context, status int, id int) error
 	}
 )
 

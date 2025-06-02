@@ -9,9 +9,7 @@ import (
 )
 
 func (c *controllers) GetAllUsers(ctx *gin.Context) {
-	var res models.Response
-
-	res = c.Usecase.GetAllUsers(ctx)
+	res := c.Usecase.GetAllUsers(ctx)
 
 	ctx.JSON(res.Code, res)
 }
@@ -38,9 +36,7 @@ func (c *controllers) RegistrationUser(ctx *gin.Context) {
 
 func (c *controllers) GetUserById(ctx *gin.Context) {
 	log.Println("<<<Controllers Get User By Id>>>>")
-	var res models.Response
-
-	res = c.Usecase.GetUserById(ctx)
+	res := c.Usecase.GetUserById(ctx)
 	log.Println("Response Registration User", res)
 
 	ctx.JSON(res.Code, res)
