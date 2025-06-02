@@ -113,6 +113,7 @@ func (r *Router) StartGinServer() error {
 		order.POST("/create", middleware.Authorization(""), r.controllers.CreateOrder)
 		order.GET("/all/admin", middleware.Authorization("Admin"), r.controllers.GetAllOrder)
 		order.PUT("/update-status/:id", middleware.Authorization("Admin"), r.controllers.UpdateOrderStatusById)
+		order.GET("/detail/admin/:id", middleware.Authorization("Admin"), r.controllers.GetOrderById)
 	}
 
 	if err := helpers.StartGinServer(r.gin); err != nil {

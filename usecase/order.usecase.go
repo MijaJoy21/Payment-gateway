@@ -105,3 +105,22 @@ func (u *usecase) UpdateOrderStatusById(ctx *gin.Context, id int, payload models
 	res.Message = "Success"
 	return res
 }
+
+func (u *usecase) GetOrderById(ctx *gin.Context, id int) models.Response {
+	res := models.Response{}
+
+	data, err := u.Repository.GetOrderById(ctx, id)
+
+	if err != nil {
+		res.Code = http.StatusNotFound
+		res.Message = "Data not found"
+
+		return res
+	}
+
+	res.Code = http.StatusOK
+	res.Message = "Success"
+	res.Data = data
+
+	return res
+}

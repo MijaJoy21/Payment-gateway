@@ -47,6 +47,7 @@ type (
 		CreateOrder(ctx *gin.Context)
 		GetAllOrder(ctx *gin.Context)
 		UpdateOrderStatusById(ctx *gin.Context)
+		GetOrderById(ctx *gin.Context)
 	}
 )
 

@@ -28,6 +28,7 @@ func (o *Order) StatusOrderName() string {
 		3: "Delivering",
 		4: "Delivered",
 		5: "Finish",
+		6: "Canceled",
 	}
 
 	return status[*o.StatusOrder]

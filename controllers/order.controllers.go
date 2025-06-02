@@ -69,7 +69,7 @@ func (c *controllers) GetAllOrder(ctx *gin.Context) {
 }
 
 func (c *controllers) UpdateOrderStatusById(ctx *gin.Context) {
-	log.Println("<<Controllers Create Order>>")
+	log.Println("<<Controllers Update Order Status By ID>>")
 	var res models.Response
 	payload := models.UpdateOrderStatusByIdReq{}
 
@@ -85,6 +85,14 @@ func (c *controllers) UpdateOrderStatusById(ctx *gin.Context) {
 	}
 
 	res = c.Usecase.UpdateOrderStatusById(ctx, id, payload)
+
+	ctx.JSON(res.Code, res)
+}
+
+func (c *controllers) GetOrderById(ctx *gin.Context) {
+	log.Println("<<Controllers Get Order By Id>>")
+	id, _ := strconv.Atoi(ctx.Param("id"))
+	res := c.Usecase.GetOrderById(ctx, id)
 
 	ctx.JSON(res.Code, res)
 }

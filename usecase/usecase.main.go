@@ -49,6 +49,7 @@ type (
 		CreateOrder(ctx *gin.Context, payload models.ReqCreateOrder) models.Response
 		GetAllOrder(ctx *gin.Context, params models.GetAllOrderParams) models.Response
 		UpdateOrderStatusById(ctx *gin.Context, id int, payload models.UpdateOrderStatusByIdReq) models.Response
+		GetOrderById(ctx *gin.Context, id int) models.Response
 	}
 )
 

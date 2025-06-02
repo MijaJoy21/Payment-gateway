@@ -14,7 +14,7 @@ type Product struct {
 	Status       *int       `gorm:"column:status" json:"status"`
 	IsPreorder   int        `gorm:"column:is_preorder" json:"is_preorder"`
 	PreOrderDate *time.Time `gorm:"column:pre_orderdate" json:"pre_orderdate"`
-	Weight       int        `gorm:"column:weight" json:"column"`
+	Weight       int        `gorm:"column:weight" json:"weight"`
 	CreatedAt    time.Time  `gorm:"column:created_at" json:"created_at"`
 	UpdatedAt    *time.Time `gorm:"column:updated_at" json:"updated_at"`
 }
