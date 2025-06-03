@@ -50,7 +50,7 @@ func (db *repository) PutProduct(ctx *gin.Context, id int, updatedData entity.Pr
 	var existingData entity.Product
 
 	query := db.DB.Model(&existingData)
-	query.Where("id = ?", id).Updates((updatedData))
+	query.Where("id = ?", id).Updates(updatedData)
 
 	return query.Error
 }

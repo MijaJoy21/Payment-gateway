@@ -40,7 +40,7 @@ type (
 		CreateProduct(ctx *gin.Context, file []*multipart.FileHeader, payload models.CreateProduct) models.Response
 		GetAllProduct(ctx *gin.Context, params models.ParamsGetProduct) models.Response
 		GetProductById(ctx *gin.Context, id int) models.Response
-		PutProduct(ctx *gin.Context, id int, payload models.RequestProduct) models.Response
+		PutProduct(ctx *gin.Context, id int, file []*multipart.FileHeader, payload models.RequestProduct) models.Response
 		CreateCart(ctx *gin.Context, payload models.CreateCart) models.Response
 		GetCartById(ctx *gin.Context, id int) models.Response
 		PutCart(ctx *gin.Context, id int, payload models.RequestCart) models.Response
@@ -54,6 +54,9 @@ type (
 		GetReviewById(ctx *gin.Context, id int) models.Response
 		PutReview(ctx *gin.Context, id int, payload models.RequestReview) models.Response
 		DeleteReview(ctx *gin.Context, id int) models.Response
+		CreateCoupon(ctx *gin.Context, payload models.CreateCoupon) models.Response
+		GetListCoupon(ctx *gin.Context, params models.GetListCouponParams) models.Response
+		UpdateUser(ctx *gin.Context, id int, payload models.UpdateUser) models.Response
 	}
 )
 

@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"fmt"
 	"log"
 	"math"
 	"mime/multipart"
@@ -35,7 +36,7 @@ func (uc *usecase) CreateProduct(ctx *gin.Context, file []*multipart.FileHeader,
 			return res
 		}
 
-		fileNames = append(fileNames, filePath)
+		fileNames = append(fileNames, fmt.Sprintf("/%s", filePath))
 	}
 	tmpTime := 0
 	if payload.PreOrderDate != "" {
@@ -60,6 +61,7 @@ func (uc *usecase) CreateProduct(ctx *gin.Context, file []*multipart.FileHeader,
 		Price:       payload.Price,
 		Image:       strings.Join(fileNames, ","),
 		Status:      payload.Status,
+		Quantity:    payload.Quantity,
 		Weight:      payload.Weight,
 	}
 
@@ -186,7 +188,7 @@ func (uc *usecase) GetProductById(ctx *gin.Context, id int) models.Response {
 	return res
 }
 
-func (uc *usecase) PutProduct(ctx *gin.Context, id int, payload models.RequestProduct) models.Response {
+func (uc *usecase) PutProduct(ctx *gin.Context, id int, file []*multipart.FileHeader, payload models.RequestProduct) models.Response {
 	res := models.Response{}
 
 	_, err := uc.Repository.GetProductById(ctx, id)
@@ -196,14 +198,38 @@ func (uc *usecase) PutProduct(ctx *gin.Context, id int, payload models.RequestPr
 		return res
 	}
 
+	fileNames := []string{}
+	for _, val := range file {
+		filePath := filepath.Join(os.Getenv("IMAGE_UPLOAD"), val.Filename)
+		filePath = filepath.ToSlash(filePath)
+
+		if _, err := os.Stat(os.Getenv("IMAGE_UPLOAD")); os.IsNotExist(err) {
+			os.Mkdir(os.Getenv("IMAGE_UPLOAD"), os.ModePerm)
+		}
+
+		if err := ctx.SaveUploadedFile(val, filePath); err != nil {
+			log.Println("Error upload image ", err)
+			res.Code = http.StatusUnprocessableEntity
+			res.Message = "Failed Upload Image"
+
+			return res
+		}
+
+		fileNames = append(fileNames, fmt.Sprintf("/%s", filePath))
+	}
+
+	payload.OldImage = append(payload.OldImage, fileNames...)
+
 	updatedData := entity.Product{
 		Name:        payload.Name,
 		Categoryid:  payload.CategoryId,
 		Description: payload.Description,
 		Price:       payload.Price,
 		Status:      payload.Status,
+		Quantity:    payload.Quantity,
 		IsPreorder:  payload.IsPreOrder,
 		Weight:      payload.Weight,
+		Image:       strings.Join(payload.OldImage, ","),
 	}
 
 	if err := uc.Repository.PutProduct(ctx, id, updatedData); err != nil {

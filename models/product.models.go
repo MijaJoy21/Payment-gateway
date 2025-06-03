@@ -9,21 +9,23 @@ type CreateProduct struct {
 	Variant      []CreateVariant `json:"variant" form:"variant"`
 	Price        float64         `json:"price" form:"price" validate:"required"`
 	Status       *int            `json:"status" form:"status"`
+	Quantity     int             `json:"quantity" form:"quantity" validate:"required"`
 	IsPreOrder   int             `json:"is_preorder" form:"is_preorder"`
 	PreOrderDate string          `json:"preorder_date" form:"preorder_date"`
 	Weight       int             `json:"weight" form:"weight" validate:"required"`
 }
 
 type RequestProduct struct {
-	Name        string `json:"name"`
-	CategoryId  int    `json:"category_id"`
-	Description string `json:"description"`
-	// Image        string    `json:"image"`
-	Price      float64 `json:"price"`
-	Status     *int    `json:"status"`
-	IsPreOrder int     `json:"is_preorder"`
-	// PreOrderDate time.Time `json:"preorder_date"`
-	Weight int `json:"weight"`
+	Name        string   `json:"name" form:"name"`
+	CategoryId  int      `json:"category_id" form:"category_id"`
+	Description string   `json:"description" form:"description"`
+	OldImage    []string `json:"image" form:"old_image"`
+	Price       float64  `json:"price" form:"price"`
+	Status      *int     `json:"status" form:"status"`
+	IsPreOrder  int      `json:"is_preorder" form:"is_preorder"`
+	Quantity    int      `json:"quantity" form:"quantity" validate:"required"`
+	// PreOrderDate time.Time `json:"preorder_date" form:"preorder_date"`
+	Weight int `json:"weight" form:"weight"`
 }
 
 type ParamsGetProduct struct {

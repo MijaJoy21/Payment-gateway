@@ -39,3 +39,12 @@ func (db *repository) GetUserById(ctx *gin.Context, id int) (entity.User, error)
 
 	return data, query.Error
 }
+
+func (d *repository) UpdateUser(ctx *gin.Context, id int, payload map[string]interface{}) error {
+	var data entity.User
+	query := d.DB.Model(&data)
+	query = query.Where("id = ?", id)
+	query.Updates(payload)
+
+	return query.Error
+}

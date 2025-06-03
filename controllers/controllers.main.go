@@ -52,6 +52,9 @@ type (
 		GetReviewById(ctx *gin.Context)
 		PutReview(ctx *gin.Context)
 		DeleteReview(ctx *gin.Context)
+		CreateCoupon(ctx *gin.Context)
+		GetListCoupon(ctx *gin.Context)
+		UpdateUser(ctx *gin.Context)
 	}
 )
 

@@ -180,3 +180,22 @@ func (uc *usecase) RegistrationAdmin(ctx *gin.Context, payload models.ReqRegistr
 
 	return res
 }
+
+func (u *usecase) UpdateUser(ctx *gin.Context, id int, payload models.UpdateUser) models.Response {
+	res := models.Response{}
+
+	if err := u.Repository.UpdateUser(ctx, id, map[string]interface{}{
+		"name":    payload.Name,
+		"email":   payload.Email,
+		"Address": payload.Address,
+	}); err != nil {
+		res.Code = http.StatusUnprocessableEntity
+		res.Message = "Unprocessable Entity"
+
+		return res
+	}
+
+	res.Code = http.StatusOK
+	res.Message = "Success"
+	return res
+}

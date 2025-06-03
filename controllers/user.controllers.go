@@ -3,7 +3,9 @@ package controllers
 import (
 	"log"
 	"net/http"
+	"payment-gateway/helpers"
 	"payment-gateway/models"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -77,6 +79,35 @@ func (c *controllers) RegistrationAdmin(ctx *gin.Context) {
 
 	res = c.Usecase.RegistrationAdmin(ctx, payload)
 	log.Println("Response Registration Admin", res)
+
+	ctx.JSON(res.Code, res)
+}
+
+func (c *controllers) UpdateUser(ctx *gin.Context) {
+	log.Println("<<< Controllers update user >>>")
+	var res models.Response
+	payload := models.UpdateUser{}
+	id, _ := strconv.Atoi(ctx.Param("id"))
+
+	if err := ctx.BindJSON(&payload); err != nil {
+		log.Println("Error Bind JSON", err)
+		res.Code = http.StatusBadRequest
+		res.Message = "Bad Request"
+
+		ctx.JSON(res.Code, res)
+		return
+	}
+
+	if err := helpers.Validator(payload); err != nil {
+		log.Println("Error validate", err)
+		res.Code = http.StatusBadRequest
+		res.Message = "Bad Request"
+
+		ctx.JSON(res.Code, res)
+		return
+	}
+
+	res = c.Usecase.UpdateUser(ctx, id, payload)
 
 	ctx.JSON(res.Code, res)
 }

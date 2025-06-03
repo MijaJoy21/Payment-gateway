@@ -58,6 +58,9 @@ type (
 		GetReviewById(ctx *gin.Context, id int) (entity.Review, error)
 		PutReview(ctx *gin.Context, id int, updatedData entity.Review) error
 		DeleteReview(ctx *gin.Context, id int) error
+		CreateCoupon(ctx *gin.Context, data entity.Coupon) error
+		GetListCoupon(ctx *gin.Context, params models.GetListCouponParams) ([]entity.Coupon, int64, error)
+		UpdateUser(ctx *gin.Context, id int, payload map[string]interface{}) error
 	}
 )
 

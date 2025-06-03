@@ -32,3 +32,9 @@ type ClaimsJwt struct {
 	Name string `json:"name"`
 	Type int    `json:"type"`
 }
+
+type UpdateUser struct {
+	Name    string `json:"name" validate:"required"`
+	Email   string `json:"email" validate:"required"`
+	Address string `json:"address" validate:"required"`
+}

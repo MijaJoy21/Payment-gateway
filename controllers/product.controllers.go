@@ -116,8 +116,34 @@ func (c *controllers) PutProduct(ctx *gin.Context) {
 		return
 	}
 
+	form, err := ctx.MultipartForm()
+
+	if err != nil {
+		log.Println("Error get image", err)
+		res.Code = http.StatusBadRequest
+		res.Message = "Bad Request"
+
+		ctx.JSON(res.Code, res)
+		return
+	}
+
+	files := form.File["new_image"]
+	if len(files) != 0 {
+		for _, val := range files {
+			ext := filepath.Ext(val.Filename)
+			if !constant.AllowedExtensions[ext] {
+				log.Println("Image type not supported", err)
+				res.Code = http.StatusBadRequest
+				res.Message = "Image file not supported"
+
+				ctx.JSON(res.Code, res)
+				return
+			}
+		}
+	}
+
 	payload := models.RequestProduct{}
-	if err := ctx.BindJSON(&payload); err != nil {
+	if err := ctx.ShouldBind(&payload); err != nil {
 		log.Println("Error binding JSON", err)
 		res.Code = http.StatusBadRequest
 		res.Message = "Invalid request body"
@@ -125,7 +151,7 @@ func (c *controllers) PutProduct(ctx *gin.Context) {
 		return
 	}
 
-	res = c.Usecase.PutProduct(ctx, id, payload)
+	res = c.Usecase.PutProduct(ctx, id, files, payload)
 	log.Println("Response Update Product", res)
 
 	ctx.JSON(res.Code, res)

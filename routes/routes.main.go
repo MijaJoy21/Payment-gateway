@@ -57,6 +57,7 @@ func (r *Router) StartGinServer() error {
 	{
 		user.GET("/", middleware.Authorization(""), r.controllers.GetUserById)
 		user.POST("/register/admin", r.controllers.RegistrationAdmin)
+		user.PUT("/update/:id", middleware.Authorization(""), r.controllers.UpdateUser)
 	}
 
 	payment := api.Group("/payment")
@@ -122,6 +123,12 @@ func (r *Router) StartGinServer() error {
 		order.GET("/all/admin", middleware.Authorization("Admin"), r.controllers.GetAllOrder)
 		order.PUT("/update-status/:id", middleware.Authorization("Admin"), r.controllers.UpdateOrderStatusById)
 		order.GET("/detail/admin/:id", middleware.Authorization("Admin"), r.controllers.GetOrderById)
+	}
+
+	coupon := api.Group("/coupon")
+	{
+		coupon.POST("/create", middleware.Authorization("Admin"), r.controllers.CreateCoupon)
+		coupon.GET("/list", middleware.Authorization(""), r.controllers.GetListCoupon)
 	}
 
 	if err := helpers.StartGinServer(r.gin); err != nil {
