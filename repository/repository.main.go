@@ -61,6 +61,7 @@ type (
 		CreateCoupon(ctx *gin.Context, data entity.Coupon) error
 		GetListCoupon(ctx *gin.Context, params models.GetListCouponParams) ([]entity.Coupon, int64, error)
 		UpdateUser(ctx *gin.Context, id int, payload map[string]interface{}) error
+		DeleteCartByUserIdAndProductId(ctx *gin.Context, userId int, productId []int) error
 	}
 )
 

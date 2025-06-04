@@ -25,6 +25,7 @@ func (u *usecase) CreateOrder(ctx *gin.Context, payload models.ReqCreateOrder) m
 		ExpeditionId: 1,
 		InvoiceId:    helpers.GenerateInvoiceId(),
 		StatusOrder:  &statusConfirmed,
+		CouponId:     payload.CouponId,
 	}
 
 	if err := u.Repository.CreateOrder(ctx, order); err != nil {
@@ -48,6 +49,14 @@ func (u *usecase) CreateOrder(ctx *gin.Context, payload models.ReqCreateOrder) m
 		res.Code = http.StatusUnprocessableEntity
 		res.Message = "Unprocessable Entity"
 		return res
+	}
+
+	productIds := []int{}
+	for _, val := range payload.OrderDetail {
+		productIds = append(productIds, val.ProductId)
+	}
+	if err := u.Repository.DeleteCartByUserIdAndProductId(ctx, userData.Id, productIds); err != nil {
+		log.Println("error delete")
 	}
 
 	res.Code = http.StatusOK

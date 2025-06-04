@@ -18,6 +18,9 @@ func (d *repository) GetListCoupon(ctx *gin.Context, params models.GetListCoupon
 	var data []entity.Coupon
 	var total int64
 	query := d.DB.Model(&data)
+	if params.Status != nil {
+		query = query.Where("status = ?", params.Status)
+	}
 	query.Count(&total)
 
 	offset := (params.Page - 1) * params.Limit

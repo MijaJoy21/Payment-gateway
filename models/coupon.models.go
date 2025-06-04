@@ -14,4 +14,5 @@ type GetListCouponParams struct {
 	Search string `json:"search" form:"search"`
 	Limit  int    `json:"limit" form:"limit"`
 	Page   int    `json:"page" form:"page"`
+	Status *int   `json:"status" form:"status"`
 }

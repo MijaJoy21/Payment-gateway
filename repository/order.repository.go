@@ -58,9 +58,11 @@ func (d *repository) UpdateOrderStatusById(ctx *gin.Context, status int, id int)
 func (d *repository) GetOrderById(ctx *gin.Context, id int) (entity.Order, error) {
 	var data entity.Order
 	query := d.DB.Model(&data)
-	query = query.Where("id = ?", id)
+	query = query.Where("orders.id = ?", id)
 	query = query.Preload("OrderDetail")
 	query = query.Preload("OrderDetail.Product")
+	query = query.Joins("Coupon")
+
 	query.First(&data)
 
 	return data, query.Error

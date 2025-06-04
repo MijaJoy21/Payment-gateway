@@ -46,3 +46,12 @@ func (db *repository) DeleteCart(ctx *gin.Context, id int) error {
 
 	return query
 }
+
+func (db *repository) DeleteCartByUserIdAndProductId(ctx *gin.Context, userId int, productId []int) error {
+	var data []entity.Cart
+	query := db.DB.Model(&data)
+	query = query.Where("product_id IN (?) and user_id = ?", productId, userId)
+	query.Delete(&data)
+
+	return query.Error
+}

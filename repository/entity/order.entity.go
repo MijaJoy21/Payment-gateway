@@ -10,6 +10,7 @@ type Order struct {
 	OrderDetail  []OrderDetail `gorm:"references:id;foreignKey:OrderId" json:"order_details"`
 	ExpeditionId int           `gorm:"column:expedition_id" json:"expedition_id"`
 	CouponId     *int          `gorm:"column:coupon_id" json:"coupon_id"`
+	Coupon       Coupon        `gorm:"references:coupon_id; foreignKey:id"  json:"coupon"`
 	InvoiceId    string        `gorm:"column:invoice_id" json:"invoice_id"`
 	StatusOrder  *int          `gorm:"column:status_order" json:"status_order"`
 	CreatedAt    time.Time     `gorm:"column:created_at" json:"created_at"`
