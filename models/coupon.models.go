@@ -16,3 +16,7 @@ type GetListCouponParams struct {
 	Page   int    `json:"page" form:"page"`
 	Status *int   `json:"status" form:"status"`
 }
+
+type UpdateCouponStatusReq struct {
+	Status *int `json:"status"`
+}

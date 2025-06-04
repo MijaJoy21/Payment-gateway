@@ -57,6 +57,7 @@ type (
 		CreateCoupon(ctx *gin.Context, payload models.CreateCoupon) models.Response
 		GetListCoupon(ctx *gin.Context, params models.GetListCouponParams) models.Response
 		UpdateUser(ctx *gin.Context, id int, payload models.UpdateUser) models.Response
+		UpdateCouponStatusById(ctx *gin.Context, id int, params models.UpdateCouponStatusReq) models.Response
 	}
 )
 

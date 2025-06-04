@@ -129,6 +129,7 @@ func (r *Router) StartGinServer() error {
 	{
 		coupon.POST("/create", middleware.Authorization("Admin"), r.controllers.CreateCoupon)
 		coupon.GET("/list", middleware.Authorization(""), r.controllers.GetListCoupon)
+		coupon.PUT("/update/status/:id", middleware.Authorization("Admin"), r.controllers.UpdateCouponStatusById)
 	}
 
 	if err := helpers.StartGinServer(r.gin); err != nil {

@@ -60,3 +60,19 @@ func (u *usecase) GetListCoupon(ctx *gin.Context, params models.GetListCouponPar
 	}
 	return res
 }
+
+func (u *usecase) UpdateCouponStatusById(ctx *gin.Context, id int, params models.UpdateCouponStatusReq) models.Response {
+	res := models.Response{}
+
+	if err := u.Repository.UpdateStatusCouponById(ctx, id, params.Status); err != nil {
+		log.Println("Error update status coupon", err)
+		res.Code = http.StatusUnprocessableEntity
+		res.Message = "Unprocessable Entity"
+
+		return res
+	}
+
+	res.Code = http.StatusOK
+	res.Message = "Success"
+	return res
+}

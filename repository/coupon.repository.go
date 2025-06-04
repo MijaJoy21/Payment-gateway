@@ -29,3 +29,13 @@ func (d *repository) GetListCoupon(ctx *gin.Context, params models.GetListCoupon
 
 	return data, total, query.Error
 }
+
+func (d *repository) UpdateStatusCouponById(ctx *gin.Context, id int, status *int) error {
+	var data entity.Coupon
+	query := d.DB.Model(&data)
+	query = query.Where("id = ?", id)
+	query.Updates(map[string]interface{}{
+		"status": status,
+	})
+	return query.Error
+}

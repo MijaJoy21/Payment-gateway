@@ -55,6 +55,7 @@ type (
 		CreateCoupon(ctx *gin.Context)
 		GetListCoupon(ctx *gin.Context)
 		UpdateUser(ctx *gin.Context)
+		UpdateCouponStatusById(ctx *gin.Context)
 	}
 )
 
