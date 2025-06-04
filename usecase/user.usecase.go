@@ -53,6 +53,7 @@ func (uc *usecase) RegistrationUser(ctx *gin.Context, payload models.ReqRegistra
 		Email:    payload.Email,
 		Password: string(newPassword),
 		Address:  payload.Address,
+		Type:     1,
 	}
 
 	if err := uc.Repository.CreateUser(ctx, data); err != nil {
