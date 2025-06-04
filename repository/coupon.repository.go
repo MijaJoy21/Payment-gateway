@@ -21,6 +21,11 @@ func (d *repository) GetListCoupon(ctx *gin.Context, params models.GetListCoupon
 	if params.Status != nil {
 		query = query.Where("status = ?", params.Status)
 	}
+
+	if params.Search != "" {
+		query = query.Where("name like ?", "%"+params.Search+"%")
+	}
+
 	query.Count(&total)
 
 	offset := (params.Page - 1) * params.Limit
