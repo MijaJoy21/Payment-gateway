@@ -96,3 +96,23 @@ func (c *controllers) GetOrderById(ctx *gin.Context) {
 
 	ctx.JSON(res.Code, res)
 }
+
+func (c *controllers) GetHistoryOrderByUserId(ctx *gin.Context) {
+	log.Println("<<Get History Order By User Id>>")
+	var res models.Response
+	params := models.GetAllHistoryOrderParams{}
+	id, _ := strconv.Atoi(ctx.Param("id"))
+	if err := ctx.BindQuery(&params); err != nil {
+		log.Println("Error Bad Request", err)
+		res.Code = http.StatusBadRequest
+		res.Message = "Bad Request"
+
+		ctx.JSON(res.Code, res)
+		return
+	}
+
+	res = c.Usecase.GetHistoryOrderByUserId(ctx, id, params)
+
+	ctx.JSON(res.Code, res)
+
+}

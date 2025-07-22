@@ -63,6 +63,7 @@ type (
 		UpdateUser(ctx *gin.Context, id int, payload map[string]interface{}) error
 		DeleteCartByUserIdAndProductId(ctx *gin.Context, userId int, productId []int) error
 		UpdateStatusCouponById(ctx *gin.Context, id int, status *int) error
+		GetHistoryOrderByUserId(ctx *gin.Context, userId int, params models.GetAllHistoryOrderParams) ([]entity.Order, int64, error)
 	}
 )
 

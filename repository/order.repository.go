@@ -67,3 +67,17 @@ func (d *repository) GetOrderById(ctx *gin.Context, id int) (entity.Order, error
 
 	return data, query.Error
 }
+
+func (d *repository) GetHistoryOrderByUserId(ctx *gin.Context, userId int, params models.GetAllHistoryOrderParams) ([]entity.Order, int64, error) {
+	var data []entity.Order
+	var total int64
+
+	query := d.DB.Model(&data)
+	query = query.Where("user_id = ?", userId)
+	query = query.Preload("OrderDetail")
+	query = query.Preload("OrderDetail.Product")
+	query = query.Joins("Coupon")
+	query.Find(&data)
+
+	return data, total, query.Error
+}

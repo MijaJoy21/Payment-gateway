@@ -123,6 +123,7 @@ func (r *Router) StartGinServer() error {
 		order.GET("/all/admin", middleware.Authorization("Admin"), r.controllers.GetAllOrder)
 		order.PUT("/update-status/:id", middleware.Authorization("Admin"), r.controllers.UpdateOrderStatusById)
 		order.GET("/detail/admin/:id", middleware.Authorization("Admin"), r.controllers.GetOrderById)
+		order.GET("/history/:id", middleware.Authorization(""), r.controllers.GetHistoryOrderByUserId)
 	}
 
 	coupon := api.Group("/coupon")

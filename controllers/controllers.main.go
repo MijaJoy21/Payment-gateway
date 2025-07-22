@@ -56,6 +56,7 @@ type (
 		GetListCoupon(ctx *gin.Context)
 		UpdateUser(ctx *gin.Context)
 		UpdateCouponStatusById(ctx *gin.Context)
+		GetHistoryOrderByUserId(ctx *gin.Context)
 	}
 )
 

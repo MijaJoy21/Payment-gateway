@@ -58,6 +58,7 @@ type (
 		GetListCoupon(ctx *gin.Context, params models.GetListCouponParams) models.Response
 		UpdateUser(ctx *gin.Context, id int, payload models.UpdateUser) models.Response
 		UpdateCouponStatusById(ctx *gin.Context, id int, params models.UpdateCouponStatusReq) models.Response
+		GetHistoryOrderByUserId(ctx *gin.Context, userId int, params models.GetAllHistoryOrderParams) models.Response
 	}
 )
 

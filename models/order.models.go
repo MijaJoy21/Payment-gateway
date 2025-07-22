@@ -1,5 +1,7 @@
 package models
 
+import "time"
+
 type ReqCreateOrder struct {
 	CouponId    *int             `json:"coupon_id,omitempty"`
 	OrderDetail []ReqOrderDetail `json:"order_detail" validate:"required"`
@@ -29,4 +31,21 @@ type GetAllOrderRes struct {
 
 type UpdateOrderStatusByIdReq struct {
 	Status int `json:"status"`
+}
+
+type GetAllHistoryOrderParams struct {
+	Search string `json:"search" form:"search"`
+	Page   int    `json:"page" form:"page"`
+	Limit  int    `json:"limit" form:"limit"`
+}
+
+type GetAllHistoryOrderRes struct {
+	Id           int       `json:"id"`
+	InvoiceId    string    `json:"invoice_id"`
+	ProductName  string    `json:"product_name"`
+	ProductImage string    `json:"product_image"`
+	Status       string    `json:"status"`
+	Quantity     int       `json:"quantity"`
+	Price        float64   `json:"price"`
+	CreatedAt    time.Time `json:"created_at"`
 }

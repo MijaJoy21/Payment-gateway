@@ -4,9 +4,11 @@ import (
 	"log"
 	"math"
 	"net/http"
+	"os"
 	"payment-gateway/helpers"
 	"payment-gateway/models"
 	"payment-gateway/repository/entity"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -89,6 +91,7 @@ func (u *usecase) GetAllOrder(ctx *gin.Context, params models.GetAllOrderParams)
 	}
 
 	res.Code = http.StatusOK
+	res.Message = "Success"
 	res.Data = response
 	res.Pagination = &models.Pagination{
 		Page:      params.Page,
@@ -130,6 +133,48 @@ func (u *usecase) GetOrderById(ctx *gin.Context, id int) models.Response {
 	res.Code = http.StatusOK
 	res.Message = "Success"
 	res.Data = data
+
+	return res
+}
+
+func (u *usecase) GetHistoryOrderByUserId(ctx *gin.Context, userId int, params models.GetAllHistoryOrderParams) models.Response {
+	res := models.Response{}
+
+	data, total, err := u.Repository.GetHistoryOrderByUserId(ctx, userId, params)
+
+	if err != nil {
+		log.Println("Error get history order by user id", err)
+		res.Code = http.StatusOK
+		res.Message = "Internal Server Error"
+
+		return res
+	}
+
+	response := []models.GetAllHistoryOrderRes{}
+	for _, val := range data {
+		for _, orderDetailVal := range val.OrderDetail {
+			response = append(response, models.GetAllHistoryOrderRes{
+				Id:           orderDetailVal.Id,
+				InvoiceId:    val.InvoiceId,
+				ProductName:  orderDetailVal.Product.Name,
+				ProductImage: os.Getenv("ADDRESS_SERVICE") + os.Getenv("PORT") + strings.Split(orderDetailVal.Product.Image, ",")[0],
+				Status:       val.StatusOrderName(),
+				Quantity:     orderDetailVal.Quantity,
+				Price:        orderDetailVal.Product.Price,
+				CreatedAt:    val.CreatedAt,
+			})
+		}
+	}
+
+	res.Code = http.StatusOK
+	res.Message = "Success"
+	res.Data = response
+	res.Pagination = &models.Pagination{
+		Page:      params.Page,
+		Limit:     params.Limit,
+		TotalData: total,
+		LastPage:  int(math.Ceil(float64(total) / float64(params.Limit))),
+	}
 
 	return res
 }
