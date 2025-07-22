@@ -77,6 +77,11 @@ func (d *repository) GetHistoryOrderByUserId(ctx *gin.Context, userId int, param
 	query = query.Preload("OrderDetail")
 	query = query.Preload("OrderDetail.Product")
 	query = query.Joins("Coupon")
+
+	if params.Search != "" {
+		query = query.Where("invoice_id like ?", "%"+params.Search+"%")
+	}
+
 	query.Find(&data)
 
 	return data, total, query.Error
